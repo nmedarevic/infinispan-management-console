@@ -96,12 +96,49 @@ export class ServerService {
   getServerView(server: IServerAddress, container: string): ng.IPromise<string[]> {
     let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
     let request: IDmrRequest = <IDmrRequest>{
-      address: [].concat("host", server.host, "server", server.name, "subsystem", "datagrid-infinispan", "cache-container", container),
+      address: this.generateAddress(server).concat("subsystem", "datagrid-infinispan", "cache-container", container),
       name: "members"
     };
-    this.dmrService.readAttribute(request).then(
-      (response) => deferred.resolve(response.result),
+    this.dmrService.readAttribute(request).then((response) => {
+        if (response === "N/A") {
+          deferred.resolve([]);
+        } else {
+          deferred.resolve(response.result);
+        }
+      },
       () => deferred.reject());
+    return deferred.promise;
+  }
+
+  isStandaloneClustered(): ng.IPromise<boolean> {
+    let deferred: ng.IDeferred<boolean> = this.$q.defer<boolean>();
+    if (this.launchType.isStandaloneMode()) {
+      let request: IDmrRequest = <IDmrRequest>{
+        address: [].concat("subsystem", "datagrid-jgroups"),
+      };
+      this.dmrService.readChildResources(request).then((response) => {
+        console.log("Response is " + response);
+        deferred.resolve(true);
+      });
+    } else {
+      deferred.resolve(false);
+    }
+    return deferred.promise;
+  }
+
+  isStandaloneLocal(): ng.IPromise<boolean> {
+    let deferred: ng.IDeferred<boolean> = this.$q.defer<boolean>();
+    if (this.launchType.isStandaloneMode()) {
+      let request: IDmrRequest = <IDmrRequest>{
+        address: [].concat("subsystem", "datagrid-jgroups"),
+      };
+      this.dmrService.readChildResources(request).then((response) => {
+        console.log("Response is " + response);
+        deferred.resolve(true);
+      });
+    } else {
+      deferred.resolve(false);
+    }
     return deferred.promise;
   }
 
@@ -112,7 +149,7 @@ export class ServerService {
         deferred.reject("It is not possible to connect to server '" + server.toString() + "' as it is stopped");
       } else {
         let request: IDmrRequest = <IDmrRequest>{
-          address: [].concat("host", server.host, "server", server.name, "core-service", "platform-mbean"),
+          address: this.generateAddress(server).concat("core-service", "platform-mbean"),
           recursive: true,
           "child-type": "type",
           "include-runtime": true,
@@ -133,7 +170,7 @@ export class ServerService {
         deferred.reject("It is not possible to connect to server '" + server.toString() + "' as it is stopped");
       } else {
         let request: IDmrRequest = <IDmrRequest>{
-          address: [].concat("host", server.host, "server", server.name, "subsystem", "datagrid-infinispan", "cache-container"),
+          address: this.generateAddress(server).concat("subsystem", "datagrid-infinispan", "cache-container"),
           "include-runtime": true,
           recursive: true
         };
@@ -146,7 +183,7 @@ export class ServerService {
   }
 
   private generateAddress(server: IServerAddress): string[] {
-    return this.launchType.isStandaloneMode() ? [] : [].concat("host", server.host, "server", server.name);
+    return this.launchType.getRuntimePath(server);
   }
 
 }

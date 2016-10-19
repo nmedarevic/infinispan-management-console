@@ -13,13 +13,14 @@ import {ServerService} from "../server/ServerService";
 import {CacheService} from "../cache/CacheService";
 import IQService = angular.IQService;
 import {SecurityService} from "../security/SecurityService";
+import {LaunchTypeService} from "../launchtype/LaunchTypeService";
 
 const module: ng.IModule = App.module("managementConsole.services.container", []);
 
 export class ContainerService {
 
   static $inject: string[] = ["$q", "dmrService", "endpointService", "profileService", "serverGroupService",
-    "jGroupsService", "domainService", "serverService", "cacheService", "securityService"];
+    "jGroupsService", "domainService", "serverService", "cacheService", "securityService", "launchType"];
 
   constructor(private $q: IQService,
               private dmrService: DmrService,
@@ -30,7 +31,8 @@ export class ContainerService {
               private domainService: DomainService,
               private serverService: ServerService,
               private cacheService: CacheService,
-              private securityService: SecurityService) {
+              private securityService: SecurityService,
+              private launchType: LaunchTypeService) {
   }
 
   getAllContainers(): ng.IPromise<ICacheContainer[]> {
@@ -96,7 +98,7 @@ export class ContainerService {
   getCacheContainerNames(profile: string): ng.IPromise<string[]> {
     let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
     let request: IDmrRequest = <IDmrRequest>{
-      address: [].concat("profile", profile, "subsystem", "datagrid-infinispan"),
+      address: this.getContainerSubsystemAddress(profile),
       "child-type": "cache-container"
     };
 
@@ -237,8 +239,13 @@ export class ContainerService {
   }
 
   private getContainerAddress(container: ICacheContainer, coordinator: IServerAddress): string[] {
-    return [].concat("host", coordinator.host, "server", coordinator.name, "subsystem", "datagrid-infinispan",
-      "cache-container", container.name);
+    let containerPath: string[] = ["subsystem", "datagrid-infinispan", "cache-container", container.name];
+    return this.launchType.getRuntimePath(coordinator).concat(containerPath);
+  }
+
+  private getContainerSubsystemAddress(profile: string): string[] {
+    let containerPath: string[] = ["subsystem", "datagrid-infinispan"];
+    return this.launchType.getProfilePath(profile).concat(containerPath);
   }
 }
 

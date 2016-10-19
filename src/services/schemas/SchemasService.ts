@@ -4,16 +4,18 @@ import {JGroupsService} from "../jgroups/JGroupsService";
 import {IServerAddress} from "../server/IServerAddress";
 import {ICacheContainer} from "../container/ICacheContainer";
 import {ISchemaDefinition} from "./ISchemaDefinition";
+import {LaunchTypeService} from "../launchtype/LaunchTypeService";
 
 const module: ng.IModule = App.module("managementConsole.services.schemas", []);
 
 export class SchemaService {
 
-  static $inject: string[] = ["$q", "dmrService", "jGroupsService"];
+  static $inject: string[] = ["$q", "dmrService", "jGroupsService", "launchType"];
 
   constructor(private $q: ng.IQService,
               private dmrService: DmrService,
-              private jGroupsService: JGroupsService) {
+              private jGroupsService: JGroupsService,
+              private launchType: LaunchTypeService) {
 
   }
 
@@ -76,8 +78,8 @@ export class SchemaService {
   }
 
   private getContainerAddress(container: string, coordinator: IServerAddress): string[] {
-    return [].concat("host", coordinator.host, "server", coordinator.name, "subsystem", "datagrid-infinispan",
-      "cache-container", container);
+    let path: string [] = ["subsystem", "datagrid-infinispan", "cache-container", container];
+    return this.launchType.getRuntimePath(coordinator).concat(path);
   }
 
 }

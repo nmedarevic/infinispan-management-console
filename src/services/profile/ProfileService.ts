@@ -3,16 +3,26 @@ import {DmrService} from "../dmr/DmrService";
 import IPromise = angular.IPromise;
 import {IDmrRequest} from "../dmr/IDmrRequest";
 import IQService = angular.IQService;
+import {LaunchTypeService} from "../launchtype/LaunchTypeService";
 
-const module:ng.IModule = App.module("managementConsole.services.profile", []);
+const module: ng.IModule = App.module("managementConsole.services.profile", []);
 
 export class ProfileService {
 
-  static $inject: string[] = ["$q", "dmrService"];
+  static $inject: string[] = ["$q", "dmrService", "launchType"];
 
-  constructor(private $q: IQService, private dmrService: DmrService) {}
+  constructor(private $q: IQService, private dmrService: DmrService, private launchType: LaunchTypeService) {
+  }
 
   getAllProfileNames(): IPromise<string[]> {
+    if (this.launchType.isDomainMode()) {
+      return this.getAllProfileNamesDomain();
+    } else if (this.launchType.isStandaloneMode()) {
+      return this.getAllProfileNamesStandalone();
+    }
+  }
+
+  getAllProfileNamesDomain(): IPromise<string[]> {
     let request: IDmrRequest = <IDmrRequest>{
       address: [],
       "child-type": "profile",
@@ -25,6 +35,12 @@ export class ProfileService {
       }
       deferred.resolve(profiles);
     });
+    return deferred.promise;
+  }
+
+  getAllProfileNamesStandalone(): IPromise<string[]> {
+    let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+    deferred.resolve(['standalone']);
     return deferred.promise;
   }
 }

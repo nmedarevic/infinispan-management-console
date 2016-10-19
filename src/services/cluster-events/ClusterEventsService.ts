@@ -7,12 +7,13 @@ import {IDmrRequest} from "../dmr/IDmrRequest";
 import {IServerAddress} from "../server/IServerAddress";
 import {ServerAddress} from "../server/ServerAddress";
 import {isNotNullOrUndefined, parseServerAddress} from "../../common/utils/Utils";
+import {LaunchTypeService} from "../launchtype/LaunchTypeService";
 
 const module: ng.IModule = App.module("managementConsole.services.cluster-events", []);
 
 export class ClusterEventsService {
 
-  static $inject: string[] = ["$q", "dmrService", "jGroupsService"];
+  static $inject: string[] = ["$q", "dmrService", "jGroupsService", "launchType"];
 
   static parseEvent(object: any): IClusterEvent {
     let scopeExists: boolean = object.scope !== undefined;
@@ -29,7 +30,10 @@ export class ClusterEventsService {
     };
   }
 
-  constructor(private $q: ng.IQService, private dmrService: DmrService, private jGroupsService: JGroupsService) {
+  constructor(private $q: ng.IQService,
+              private dmrService: DmrService,
+              private jGroupsService: JGroupsService,
+              private launchType: LaunchTypeService) {
   }
 
   fetchClusterEvents(container: ICacheContainer, maxLines: number, category?: string): ng.IPromise<IClusterEvent[]> {
@@ -49,8 +53,7 @@ export class ClusterEventsService {
 
   private getEventLog(server: IServerAddress, container: string, maxLines: number, category: string): ng.IPromise<any> {
     let request: IDmrRequest = <IDmrRequest>{
-      address: [].concat("host", server.host, "server", server.name, "subsystem", "datagrid-infinispan",
-        "cache-container", container),
+      address: this.getAddressPath(server, container),
       lines: maxLines
     };
 
@@ -59,6 +62,11 @@ export class ClusterEventsService {
     }
 
     return this.dmrService.readEventLog(request);
+  }
+
+  private getAddressPath(server: IServerAddress, container:string): string[] {
+    let path: string[] = ["subsystem", "datagrid-infinispan", "cache-container", container];
+    return this.launchType.getRuntimePath(server).concat(path);
   }
 }
 

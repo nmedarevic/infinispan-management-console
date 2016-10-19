@@ -12,10 +12,11 @@ import {isEmptyObject, isNotNullOrUndefined, isNullOrUndefined} from "../../comm
 import {openErrorModal} from "../../common/dialogs/Modals";
 import IModalService = angular.ui.bootstrap.IModalService;
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
+import {LaunchTypeService} from "../../services/launchtype/LaunchTypeService";
 
 export class ServerGroupCtrl {
   static $inject: string[] = ["$state", "$uibModal", "dmrService", "serverGroupService", "serverService",
-    "jGroupsService", "serverGroup", "available"];
+    "jGroupsService", "launchType", "serverGroup", "available"];
 
   status: string = "DEGRADED";
   serverStatusMap: IMap<string> = {};
@@ -29,6 +30,7 @@ export class ServerGroupCtrl {
               private serverGroupService: ServerGroupService,
               private serverService: ServerService,
               private jGroupsService: JGroupsService,
+              private launchType: LaunchTypeService,
               public serverGroup: IServerGroup,
               public available: boolean) {
     this.fetchSGCoordinator();
@@ -141,6 +143,10 @@ export class ServerGroupCtrl {
         this.refresh();
       })
       .catch(error => openErrorModal(this.$uibModal, error));
+  }
+
+  isDomainMode(): boolean {
+    return this.launchType.isDomainMode();
   }
 
   private filterUniqueHosts(): string[] {
