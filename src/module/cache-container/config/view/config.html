@@ -23,7 +23,7 @@
         <li><a ui-sref-active="active" ui-sref=".security" translate>SECURITY</a></li>
         <li><a ui-sref-active="active" ui-sref=".templates" translate>TEMPLATES</a></li>
         <li><a ui-sref-active="active" ui-sref=".tasks" translate>TASKS</a></li>
-        <li><a ui-sref-active="active" ui-sref=".deployments" translate>DEPLOYMENTS</a></li>
+        <li ng-if="ctrl.isDomainMode()"><a ui-sref-active="active" ui-sref=".deployments" translate>DEPLOYMENTS</a></li>
       </ul>
     </div>
   </div>
