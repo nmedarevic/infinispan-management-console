@@ -2,14 +2,13 @@ import {AuthenticationService} from "../../services/authentication/Authenticatio
 import {IStateService} from "angular-ui-router";
 
 export class NavbarCtrl {
-  static $inject: string[] = ["$scope", "$state", "authService", "constants"];
+  static $inject: string[] = ["$scope", "$state", "authService"];
 
   stateChanging: boolean;
 
   constructor(private $scope: ng.IScope,
               private $state: IStateService,
-              private authService: AuthenticationService,
-              private constants:any) {
+              private authService: AuthenticationService) {
     this.stateChanging = false;
     $scope.$on("$stateChangeStart", () => this.stateChanging = true);
     $scope.$on("$stateChangeSuccess", () => this.stateChanging = false);
