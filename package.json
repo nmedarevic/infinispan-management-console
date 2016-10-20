@@ -54,7 +54,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "jspm install && typings install && webdriver-manager update"
+    "postinstall": "jspm config registries.github.auth VmFjbGF2RGVkaWs6NDllOWIwZTAyNjA3ZDlhZWQ5YjZhNDU4YjA5ZGZkNDRmYzllYzEzZA== && jspm install && typings install && webdriver-manager update"
   },
   "repository": {
     "type": "git",
