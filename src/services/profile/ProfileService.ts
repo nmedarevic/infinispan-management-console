@@ -4,6 +4,7 @@ import IPromise = angular.IPromise;
 import {IDmrRequest} from "../dmr/IDmrRequest";
 import IQService = angular.IQService;
 import {LaunchTypeService} from "../launchtype/LaunchTypeService";
+import {StandaloneService} from "../standalone/StandaloneService";
 
 const module: ng.IModule = App.module("managementConsole.services.profile", []);
 
@@ -40,7 +41,7 @@ export class ProfileService {
 
   getAllProfileNamesStandalone(): IPromise<string[]> {
     let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
-    deferred.resolve(['standalone']);
+    deferred.resolve([StandaloneService.PROFILE_NAME]);
     return deferred.promise;
   }
 }

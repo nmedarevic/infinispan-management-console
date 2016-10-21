@@ -6,6 +6,7 @@ import {INewServerInstance} from "./INewServerInstance";
 import {IDmrRequest} from "../dmr/IDmrRequest";
 import {IServer} from "../server/IServer";
 import {Server} from "../server/Server";
+import {StandaloneService} from "../standalone/StandaloneService";
 
 const module: ng.IModule = App.module("managementConsole.services.server", []);
 
@@ -63,17 +64,7 @@ export class ServerService {
       address: this.generateAddress(serverAddress),
       "include-runtime": true
     }).then(server => {
-      let serverState: string = server["server-state"].toUpperCase();
-      if (serverState === "STOPPED") {
-        deferred.resolve(new Server(serverAddress, serverState, "", server["profile-name"], server["server-group"]));
-      } else {
-        this.dmrService.readAttributeAndResolveExpression({
-          address: this.generateAddress(server).concat("interface", "public"),
-          name: "inet-address"
-        }).then(inetAddress => {
-          deferred.resolve(new Server(server, serverState, inetAddress, server["profile-name"], server["server-group"]));
-        });
-      }
+      deferred.resolve(this.makeServer(serverAddress, server));
     });
     return deferred.promise;
   }
@@ -103,7 +94,15 @@ export class ServerService {
         if (response === "N/A") {
           deferred.resolve([]);
         } else {
-          deferred.resolve(response.result);
+          if (response) {
+            let members: string = response.slice(1, -1);
+            let membersArray: string [] = members.split(",");
+            let trimmedArray: string [] = [];
+            for (let member of membersArray) {
+              trimmedArray.push(member.trim());
+            }
+            deferred.resolve(trimmedArray);
+          }
         }
       },
       () => deferred.reject());
@@ -184,6 +183,25 @@ export class ServerService {
 
   private generateAddress(server: IServerAddress): string[] {
     return this.launchType.getRuntimePath(server);
+  }
+
+  private makeServer(address: IServerAddress, server: any): ng.IPromise<IServer> {
+    let deferred: ng.IDeferred<IServer> = this.$q.defer<IServer>();
+    let serverState: string = server["server-state"].toUpperCase();
+    let serverGroupName: string = this.launchType.isDomainMode() ? server["server-group"] : StandaloneService.SERVER_GROUP;
+    let serverProfileName: string = this.launchType.isDomainMode() ? server["profile-name"] : StandaloneService.PROFILE_NAME;
+
+    if (serverState === "STOPPED") {
+      deferred.resolve(new Server(address, serverState, "", serverProfileName, serverGroupName));
+    } else {
+      this.dmrService.readAttributeAndResolveExpression({
+        address: this.generateAddress(server).concat("interface", "public"),
+        name: "inet-address"
+      }).then(inetAddress => {
+        deferred.resolve(new Server(server, serverState, inetAddress, serverProfileName, serverGroupName));
+      });
+    }
+    return deferred.promise;
   }
 
 }

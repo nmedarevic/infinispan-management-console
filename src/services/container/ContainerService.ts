@@ -154,7 +154,7 @@ export class ContainerService {
                 return;
               }
               let firstView: string[] = views[0];
-              deferred.resolve(views.every((view) => view === firstView));
+              deferred.resolve(views.every((view) => JSON.stringify(view) === JSON.stringify(firstView)));
             });
 
         } else {

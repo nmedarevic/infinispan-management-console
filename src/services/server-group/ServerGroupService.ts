@@ -10,6 +10,7 @@ import {ServerService} from "../server/ServerService";
 import IQService = angular.IQService;
 import {IMap} from "../../common/utils/IMap";
 import {LaunchTypeService} from "../launchtype/LaunchTypeService";
+import {StandaloneService} from "../standalone/StandaloneService";
 
 const module: ng.IModule = App.module("managementConsole.services.server-group", []);
 
@@ -64,9 +65,9 @@ export class ServerGroupService {
   getAllServerGroupsMapStandalone(): ng.IPromise<IMap<IServerGroup>> {
     let deferred: ng.IDeferred<IMap<IServerGroup>> = this.$q.defer<IMap<IServerGroup>>();
     let map: IMap<IServerGroup> = <IMap<IServerGroup>>{};
-    map["default"] = <IServerGroup> {
-      name: "default",
-      profile: "standalone",
+    map[StandaloneService.SERVER_GROUP] = <IServerGroup> {
+      name: StandaloneService.SERVER_GROUP,
+      profile: StandaloneService.PROFILE_NAME,
       "socket-binding-group": "standard-sockets",
       "socket-binding-port-offset": 0,
       members: []
@@ -111,11 +112,13 @@ export class ServerGroupService {
 
   getAllServerGroupsMapWithMembersStandalone(): ng.IPromise<IMap<IServerGroup>> {
     let deferred: ng.IDeferred<IMap<IServerGroup>> = this.$q.defer<IMap<IServerGroup>>();
-    this.getHostName().then((hostName) => {
+    this.serverService.getServerView(null, "clustered").then((view: string []) => {
       this.getAllServerGroupsMap()
         .then((map) => {
-          let serverGroup: IServerGroup = map["default"];
-          serverGroup.members.push(new ServerAddress(hostName, hostName));
+          let serverGroup: IServerGroup = map[StandaloneService.SERVER_GROUP];
+          for (let member of view) {
+            serverGroup.members.push(new ServerAddress(member, member));
+          }
           deferred.resolve(map);
         });
     });
@@ -149,7 +152,7 @@ export class ServerGroupService {
       });
     } else if (this.launchType.isStandaloneMode()) {
       this.getAllServerGroupsMapWithMembers().then((sgMap) => {
-        let serverGroup: any = sgMap["default"];
+        let serverGroup: any = sgMap[StandaloneService.SERVER_GROUP];
         deferred.resolve(serverGroup);
       });
     }

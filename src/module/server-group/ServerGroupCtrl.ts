@@ -41,7 +41,7 @@ export class ServerGroupCtrl {
   }
 
   isCoordinator(server: IServerAddress): boolean {
-    return this.coordinator.equals(server);
+    return (this.coordinator) ? this.coordinator.equals(server) : false;
   }
 
   isServerStopped(server: IServerAddress): boolean {
@@ -156,14 +156,20 @@ export class ServerGroupCtrl {
   }
 
   private fetchServerStatuses(): void {
-    this.serverGroupService.getServerStatuses(this.serverGroup).then((statusMap) => this.serverStatusMap = statusMap);
+    this.serverGroupService.getServerStatuses(this.serverGroup).then((statusMap) => {
+      this.serverStatusMap = statusMap;
+    });
   }
 
   private fetchSGCoordinator(): void {
-    this.jGroupsService.getServerGroupCoordinator(this.serverGroup).then((coordinator) => this.coordinator = coordinator);
+    this.jGroupsService.getServerGroupCoordinator(this.serverGroup).then((coordinator) => {
+      this.coordinator = coordinator;
+    });
   }
 
   private fetchInetAddresses(): void {
-    this.serverGroupService.getServerInetAddresses(this.serverGroup).then((inetMap) => this.serverInetMap = inetMap);
+    this.serverGroupService.getServerInetAddresses(this.serverGroup).then((inetMap) => {
+      this.serverInetMap = inetMap;
+    });
   }
 }
