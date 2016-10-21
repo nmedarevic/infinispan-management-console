@@ -6,9 +6,10 @@ import {ICacheContainer} from "../../services/container/ICacheContainer";
 import {ICache} from "../../services/cache/ICache";
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IModalService = angular.ui.bootstrap.IModalService;
+import {JGroupsService} from "../../services/jgroups/JGroupsService";
 
 export class CacheCtrl {
-  static $inject: string[] = ["$state", "$interval", "$uibModal", "cacheService", "container", "cache", "stats", "cacheEnabledRSP"];
+  static $inject: string[] = ["$state", "$interval", "$uibModal", "cacheService", "jGroupsService", "container", "cache", "stats", "cacheEnabledRSP"];
 
   private cacheEnabled: boolean;
   private errorExecuting: boolean;
@@ -17,7 +18,8 @@ export class CacheCtrl {
 
   constructor(private $state: IStateService, private $interval: IIntervalService,
               private $uibModal: IModalService, private cacheService: CacheService,
-              private container: ICacheContainer, private cache: ICache, private stats: any, private cacheEnabledRSP: any) {
+              private jGroupsService: JGroupsService, private container: ICacheContainer,
+              private cache: ICache, private stats: any, private cacheEnabledRSP: any) {
     this.cacheEnabled = !cacheEnabledRSP[cache.name];
   }
 
@@ -152,6 +154,10 @@ export class CacheCtrl {
 
   currentClusterAvailabilityAsString(): string {
     return this.container.available ? "AVAILABLE" : "N/A";
+  }
+
+  isLocalMode(): boolean {
+    return !this.jGroupsService.hasJGroupsStack();
   }
 
   private refresh(): void {

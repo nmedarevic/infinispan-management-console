@@ -37,18 +37,22 @@ export class ClusterEventsService {
   }
 
   fetchClusterEvents(container: ICacheContainer, maxLines: number, category?: string): ng.IPromise<IClusterEvent[]> {
-    let deferred: ng.IDeferred<IClusterEvent[]> = this.$q.defer<IClusterEvent[]>();
-    this.jGroupsService.getServerGroupCoordinator(container.serverGroup)
-      .then((coordinator) => {
-          let server: IServerAddress = new ServerAddress(coordinator.host, coordinator.name);
-          return this.getEventLog(server, container.name, maxLines, category);
-        },
-        error => deferred.reject(error))
-      .then((eventLog) => {
-        let events: IClusterEvent[] = eventLog.map((event) => ClusterEventsService.parseEvent(event));
-        deferred.resolve(events);
-      });
-    return deferred.promise;
+    if (this.jGroupsService.hasJGroupsStack()) {
+      let deferred: ng.IDeferred<IClusterEvent[]> = this.$q.defer<IClusterEvent[]>();
+      this.jGroupsService.getServerGroupCoordinator(container.serverGroup)
+        .then((coordinator) => {
+            let server: IServerAddress = new ServerAddress(coordinator.host, coordinator.name);
+            return this.getEventLog(server, container.name, maxLines, category);
+          },
+          error => deferred.reject(error))
+        .then((eventLog) => {
+          let events: IClusterEvent[] = eventLog.map((event) => ClusterEventsService.parseEvent(event));
+          deferred.resolve(events);
+        });
+      return deferred.promise;
+    } else {
+      return this.$q.when([]);
+    }
   }
 
   private getEventLog(server: IServerAddress, container: string, maxLines: number, category: string): ng.IPromise<any> {

@@ -83,7 +83,11 @@ export class ContainerService {
           deferred.resolve(container);
           return;
         }
-        return this.getSiteArrays(container);
+        if (this.jGroupsService.hasJGroupsStack()) {
+          return this.getSiteArrays(container);
+        } else {
+          return deferred.resolve(container);
+        }
       })
       .then(sites => {
         for (let siteType in sites) {
@@ -149,12 +153,13 @@ export class ContainerService {
 
           this.$q.all(viewPromisies)
             .then((views: [string[]]) => {
-              if (views.length === 1) {
+              if (views.length === 0 || views.length === 1) {
                 deferred.resolve(true);
                 return;
               }
               let firstView: string[] = views[0];
-              deferred.resolve(views.every((view) => JSON.stringify(view) === JSON.stringify(firstView)));
+              let allViewsEqual: boolean = views.every((view) => JSON.stringify(view) === JSON.stringify(firstView));
+              deferred.resolve(allViewsEqual);
             });
 
         } else {
@@ -192,14 +197,18 @@ export class ContainerService {
 
   isRebalancingEnabled(container: ICacheContainer): ng.IPromise<boolean> {
     let deferred: ng.IDeferred<boolean> = this.$q.defer<boolean>();
-    this.jGroupsService.getServerGroupCoordinator(container.serverGroup)
-      .then(coordinator => {
-        let request: IDmrRequest = {
-          address: this.getContainerAddress(container, coordinator),
-          name: "cluster-rebalance"
-        };
-        this.dmrService.readAttribute(request).then(response => deferred.resolve(Boolean(response)));
-      }, () => deferred.resolve(false));
+    if (this.jGroupsService.hasJGroupsStack()) {
+      this.jGroupsService.getServerGroupCoordinator(container.serverGroup)
+        .then(coordinator => {
+          let request: IDmrRequest = {
+            address: this.getContainerAddress(container, coordinator),
+            name: "cluster-rebalance"
+          };
+          this.dmrService.readAttribute(request).then(response => deferred.resolve(Boolean(response)));
+        }, () => deferred.resolve(false));
+    } else {
+      deferred.resolve(true); // in fact there is no rebalancing in LOCAL mode
+    }
     return deferred.promise;
   }
 

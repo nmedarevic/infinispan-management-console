@@ -44,6 +44,10 @@ export class CacheContainerCtrl {
     this.createRebalanceModal(false, "DISABLE rebalancing for cache container?");
   }
 
+  isLocalMode(): boolean {
+    return !this.dmrService.isClustered;
+  }
+
   createSiteModal(): void {
     this.$uibModal.open({
       templateUrl: "module/cache-container/view/manage-sites-modal.html",

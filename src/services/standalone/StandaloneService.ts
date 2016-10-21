@@ -12,11 +12,15 @@ export class StandaloneService {
 
   static $inject: string[] = ["$q", "dmrService"];
 
+  public isClustered: boolean;
+
   constructor(private $q: IQService,
               private dmrService: DmrService) {
+    this.hasCluster().then((result) => {
+      this.isClustered = result;
+    });
   }
-
-  isClustered(): ng.IPromise<boolean> {
+  private hasCluster(): ng.IPromise<boolean> {
     let deferred: ng.IDeferred<boolean> = this.$q.defer<boolean>();
     let request: IDmrRequest = <IDmrRequest>{
       address: [].concat("subsystem", "datagrid-jgroups")

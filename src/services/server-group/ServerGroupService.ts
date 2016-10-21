@@ -112,7 +112,7 @@ export class ServerGroupService {
 
   getAllServerGroupsMapWithMembersStandalone(): ng.IPromise<IMap<IServerGroup>> {
     let deferred: ng.IDeferred<IMap<IServerGroup>> = this.$q.defer<IMap<IServerGroup>>();
-    this.serverService.getServerView(null, "clustered").then((view: string []) => {
+    this.serverService.getServerView(null, "local").then((view: string []) => {
       this.getAllServerGroupsMap()
         .then((map) => {
           let serverGroup: IServerGroup = map[StandaloneService.SERVER_GROUP];
