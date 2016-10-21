@@ -7,9 +7,10 @@ import {ICache} from "../../services/cache/ICache";
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IModalService = angular.ui.bootstrap.IModalService;
 import {JGroupsService} from "../../services/jgroups/JGroupsService";
+import {LaunchTypeService} from "../../services/launchtype/LaunchTypeService";
 
 export class CacheCtrl {
-  static $inject: string[] = ["$state", "$interval", "$uibModal", "cacheService", "jGroupsService", "container", "cache", "stats", "cacheEnabledRSP"];
+  static $inject: string[] = ["$state", "$interval", "$uibModal", "cacheService", "launchType", "container", "cache", "stats", "cacheEnabledRSP"];
 
   private cacheEnabled: boolean;
   private errorExecuting: boolean;
@@ -18,7 +19,7 @@ export class CacheCtrl {
 
   constructor(private $state: IStateService, private $interval: IIntervalService,
               private $uibModal: IModalService, private cacheService: CacheService,
-              private jGroupsService: JGroupsService, private container: ICacheContainer,
+              private launchType: LaunchTypeService, private container: ICacheContainer,
               private cache: ICache, private stats: any, private cacheEnabledRSP: any) {
     this.cacheEnabled = !cacheEnabledRSP[cache.name];
   }
@@ -157,7 +158,7 @@ export class CacheCtrl {
   }
 
   isLocalMode(): boolean {
-    return !this.jGroupsService.hasJGroupsStack();
+    return this.launchType.isStandaloneLocalMode();
   }
 
   private refresh(): void {

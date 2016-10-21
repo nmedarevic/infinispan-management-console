@@ -24,7 +24,8 @@ export class NavbarCtrl {
   }
 
   hasClusterView(): boolean {
-    return this.jGroupsService.hasJGroupsStack();
+    let stack:boolean = this.jGroupsService.hasJGroupsStack();
+    return stack;
   }
 
   getUser(): string {

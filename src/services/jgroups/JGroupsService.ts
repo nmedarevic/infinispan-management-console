@@ -131,7 +131,7 @@ export class JGroupsService {
   }
 
   hasJGroupsStack(): boolean {
-    return this.launchType.isDomainMode() || this.dmrService.isClustered;
+    return this.launchType.isDomainMode() || this.launchType.isStandaloneClusteredMode();
   }
 
   private getJgroupsRuntime(server: IServerAddress): string[] {

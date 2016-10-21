@@ -13,16 +13,12 @@ export class DmrService {
 
   url: string;
   urlUpload: string;
-  public isClustered:boolean;
 
   constructor(private $http: ng.IHttpService,
               private $cacheFactory: ng.ICacheFactoryService,
               private $q: ng.IQService,
               private authService: AuthenticationService,
               private $location: ng.ILocationService) {
-    this.hasJGroupsCluster().then((result) => {
-      this.isClustered = result;
-    });
   }
 
   add(request: IDmrRequest): angular.IPromise<any> {
@@ -95,7 +91,7 @@ export class DmrService {
     this.$cacheFactory.get("$http").removeAll();
   }
 
-  hasJGroupsCluster(): ng.IPromise<boolean> {
+  hasJGroupsSubsystem(): ng.IPromise<boolean> {
     let deferred: ng.IDeferred<boolean> = this.$q.defer<boolean>();
     let request: IDmrRequest = <IDmrRequest>{
       address: [].concat("subsystem", "datagrid-jgroups")

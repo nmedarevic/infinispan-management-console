@@ -40,10 +40,12 @@ export class AuthenticationService {
     let deferred: ng.IDeferred<string> = this.$q.defer();
     this.dmrService.readAttribute({address: [], name: "launch-type"})
       .then(response => {
-        this.setCredentials(credentials);
-        this.launchType.set(response);
-        this.availability.startApiAccessibleCheck();
-        deferred.resolve();
+        // this.dmrService.hasJGroupsSubsystem().then((hasJGroupsStack) => {
+          this.setCredentials(credentials);
+          this.launchType.set(response, true);
+          this.availability.startApiAccessibleCheck();
+          deferred.resolve();
+        // });
       }, error => {
         this.logout();
         deferred.reject(error);
