@@ -112,16 +112,35 @@ export class ServerGroupService {
 
   getAllServerGroupsMapWithMembersStandalone(): ng.IPromise<IMap<IServerGroup>> {
     let deferred: ng.IDeferred<IMap<IServerGroup>> = this.$q.defer<IMap<IServerGroup>>();
-    this.serverService.getServerView(null, "clustered").then((view: string []) => {
-      this.getAllServerGroupsMap()
-        .then((map) => {
-          let serverGroup: IServerGroup = map[StandaloneService.SERVER_GROUP];
-          for (let member of view) {
-            serverGroup.members.push(new ServerAddress(member, member));
-          }
-          deferred.resolve(map);
-        });
+    this.getStandaloneCacheContainerNames().then((containers: string[]) => {
+      this.serverService.getServerView(null, containers[0]).then((view: string []) => {
+        this.getAllServerGroupsMap()
+          .then((map) => {
+            let serverGroup: IServerGroup = map[StandaloneService.SERVER_GROUP];
+            for (let member of view) {
+              serverGroup.members.push(new ServerAddress(member, member));
+            }
+            deferred.resolve(map);
+          });
+      });
     });
+    return deferred.promise;
+  }
+
+  getStandaloneCacheContainerNames(): ng.IPromise<string[]> {
+    let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+    let request: IDmrRequest = <IDmrRequest>{
+      address: ["subsystem", "datagrid-infinispan"],
+      "child-type": "cache-container"
+    };
+    this.dmrService.readChildResources(request)
+      .then((containers) => {
+        let containerNames: string[] = [];
+        for (let container in containers) {
+          containerNames.push(container);
+        }
+        deferred.resolve(containerNames);
+      });
     return deferred.promise;
   }
 

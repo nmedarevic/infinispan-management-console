@@ -35,16 +35,20 @@ export class SchemaService {
   }
 
   getProtoSchemaNames(container: ICacheContainer): ng.IPromise<string[]> {
-    let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
-    this.jGroupsService.getServerGroupCoordinator(container.serverGroup)
-      .then(coordinator => {
-        return this.dmrService.executePost({
-          address: this.getContainerAddress(container.name, coordinator),
-          operation: "get-proto-schema-names"
-        });
-      })
-      .then(names => deferred.resolve(names));
-    return deferred.promise;
+    if (this.launchType.isStandaloneLocalMode()) {
+      return this.$q.when([]);
+    } else {
+      let deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+      this.jGroupsService.getServerGroupCoordinator(container.serverGroup)
+        .then(coordinator => {
+          return this.dmrService.executePost({
+            address: this.getContainerAddress(container.name, coordinator),
+            operation: "get-proto-schema-names"
+          });
+        })
+        .then(names => deferred.resolve(names));
+      return deferred.promise;
+    }
   }
 
   registerProtoSchema(container: ICacheContainer, schema: ISchemaDefinition): ng.IPromise<void> {

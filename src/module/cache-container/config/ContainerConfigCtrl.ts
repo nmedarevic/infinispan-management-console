@@ -10,4 +10,8 @@ export class ContainerConfigCtrl {
   public isDomainMode(): boolean {
     return this.launchType.isDomainMode();
   }
+
+  public isStandaloneLocalMode(): boolean {
+    return this.launchType.isStandaloneLocalMode();
+  }
 }
