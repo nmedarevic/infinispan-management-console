@@ -2,8 +2,6 @@ import {App} from "../../ManagementConsole";
 import {isNullOrUndefined} from "../../common/utils/Utils";
 import ILocalStorageService = angular.local.storage.ILocalStorageService;
 import {IServerAddress} from "../server/IServerAddress";
-import {DmrService} from "../dmr/DmrService";
-import {IDmrRequest} from "../dmr/IDmrRequest";
 
 const module: ng.IModule = App.module("managementConsole.services.launchtype", []);
 

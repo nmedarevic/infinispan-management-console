@@ -39,13 +39,17 @@ export class AuthenticationService {
     this.setCredentials(credentials);
     let deferred: ng.IDeferred<string> = this.$q.defer();
     this.dmrService.readAttribute({address: [], name: "launch-type"})
-      .then(response => {
-        // this.dmrService.hasJGroupsSubsystem().then((hasJGroupsStack) => {
+      .then((response:string) => {
+        if (LaunchTypeService.STANDALONE_MODE === response) {
+          this.dmrService.hasJGroupsSubsystem().then((hasJGroupsStack) => {
+            this.launchType.set(response, hasJGroupsStack);
+          });
+        } else {
+          this.launchType.set(response, true);
+        }
         this.setCredentials(credentials);
-        this.launchType.set(response, false);
         this.availability.startApiAccessibleCheck();
         deferred.resolve();
-        // });
       }, error => {
         this.logout();
         deferred.reject(error);

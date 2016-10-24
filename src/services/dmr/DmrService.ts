@@ -96,9 +96,9 @@ export class DmrService {
     let request: IDmrRequest = <IDmrRequest>{
       address: [].concat("subsystem", "datagrid-jgroups")
     };
-    this.readChildResources(request).then((response) => {
+    this.readResource(request).then((response) => {
       deferred.resolve(true);
-    }).catch(() => {
+    }).catch((reason) => {
       deferred.resolve(false);
     });
     return deferred.promise;
@@ -181,7 +181,7 @@ export class DmrService {
     };
 
     let deferred: ng.IDeferred<any> = this.$q.defer<any>();
-    this.url = this.url === undefined ? this.generateBaseUrl(this.authService.getCredentials()) : this.url;
+    this.url = isNullOrUndefined(this.url) ? this.generateBaseUrl(this.authService.getCredentials()) : this.url;
     let getUrl: string = this.generateGetUrl(this.url, request);
 
     this.$http.get(getUrl, config).then((success: any) => {
@@ -190,6 +190,7 @@ export class DmrService {
       let msg: string = this.processDmrFailure(failure);
       console.log(msg);
       deferred.reject();
+      this.url = null;
     });
     return deferred.promise;
   }
