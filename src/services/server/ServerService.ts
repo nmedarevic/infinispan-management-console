@@ -7,6 +7,8 @@ import {IDmrRequest} from "../dmr/IDmrRequest";
 import {IServer} from "../server/IServer";
 import {Server} from "../server/Server";
 import {StandaloneService} from "../standalone/StandaloneService";
+import {MemoryData} from "../../components/memory/MemoryData";
+
 
 const module: ng.IModule = App.module("managementConsole.services.server", []);
 
@@ -160,6 +162,10 @@ export class ServerService {
       }
     });
     return deferred.promise;
+  }
+
+  getServerMemoryStats(server: IServerAddress): ng.IPromise<MemoryData> {
+    return this.$q.when(new MemoryData(4.2, 6.5, 3.5, 7.2));
   }
 
   getAggregateNodeStats(server: IServerAddress): ng.IPromise<string[]> {

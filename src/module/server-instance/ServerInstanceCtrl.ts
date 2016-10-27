@@ -1,29 +1,18 @@
-import {deepGet} from "../../common/utils/Utils";
 import {openConfirmationModal} from "../../common/dialogs/Modals";
 import {ServerService} from "../../services/server/ServerService";
 import {IServerAddress} from "../../services/server/IServerAddress";
 import {IServer} from "../../services/server/IServer";
 import {IIntervalService} from "angular";
-import {InstanceMemoryChart} from "./MemoryChart";
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IModalService = angular.ui.bootstrap.IModalService;
 import {IStateService} from "angular-ui-router";
+import {MemoryData} from "../../components/memory/MemoryData";
 
 export class ServerInstanceCtrl {
   static $inject: string[] = ["$state", "$interval", "$uibModal", "serverService", "coord", "serverInstance"];
 
-  private threadCount: number;
-  private threadPeakCount: number;
-  private threadDaemonCount: number;
-
-  private directBufferPoolCount: number;
-  private directBufferPoolMemoryUsed: number;
-
-  private mappedBufferPoolCount: number;
-  private mappedBufferPoolMemoryUsed: number;
-
+  private data: MemoryData;
   private nodeStats: any;
-  private chart: InstanceMemoryChart;
 
   constructor(private $state: IStateService, private $interval: IIntervalService, private $uibModal: IModalService,
               private serverService: ServerService, private coord: IServerAddress, private serverInstance: IServer) {
@@ -37,32 +26,13 @@ export class ServerInstanceCtrl {
   }
 
   fetchThreadAndMemoryStats(address: IServerAddress): void {
-    this.serverService.getServerStats(address).then(response => {
-      // memory
-      let memory: any = response.memory["heap-memory-usage"];
-      let used: number = (memory.used / 1024) / 1024;
-      let max: number = (memory.max / 1024) / 1024;
-
-      // threading
-      let threading: any = response.threading;
-      this.threadCount = threading["thread-count"];
-      this.threadPeakCount = threading["peak-thread-count"];
-      this.threadDaemonCount = threading["daemon-thread-count"];
-
-      let directBufferPool: any = deepGet(response, "buffer-pool.name.direct");
-      let mappedBufferPool: any = deepGet(response, "buffer-pool.name.mapped");
-
-      this.directBufferPoolCount = directBufferPool.count;
-      this.directBufferPoolMemoryUsed = directBufferPool["memory-used"];
-
-      this.mappedBufferPoolCount = mappedBufferPool.count;
-      this.mappedBufferPoolMemoryUsed = mappedBufferPool["memory-used"];
-
-      if (this.chart) {
-        this.chart.destroy();
-      }
-      this.chart = new InstanceMemoryChart("#chart", used, max);
+    this.serverService.getServerMemoryStats(address).then((response: MemoryData) => {
+      this.data = response;
     });
+  }
+
+  getMemoryChartData(): MemoryData {
+    return this.data;
   }
 
   fetchAggregateNodeStats(address: IServerAddress): void {
