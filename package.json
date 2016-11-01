@@ -28,7 +28,6 @@
     "gulp-util": "3.0.7",
     "http-proxy-middleware": "0.17.1",
     "jspm": "~0.16.33",
-    "jspm-git": "^0.6.0",
     "karma": "~0.13.22",
     "karma-chai-sinon": "~0.1.5",
     "karma-coverage": "~1.0.0",
@@ -55,7 +54,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "jspm config registries.github.version 1.0 && jspm config registries.github.baseurl http://git.app.eng.bos.redhat.com/git/ && jspm config registries.github.handler jspm-git && jspm install && typings install && webdriver-manager update"
+    "postinstall": "jspm install && typings install && webdriver-manager update"
   },
   "repository": {
     "type": "git",
