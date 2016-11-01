@@ -55,7 +55,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "jspm config registries.github.version 1.0 && jspm config registries.github.baseurl https://code.engineering.redhat.com/gerrit/p/ && jspm config registries.github.handler jspm-git && jspm install && typings install && webdriver-manager update"
+    "postinstall": "jspm config registries.github.version 1.0 && jspm config registries.github.baseurl http://git.app.eng.bos.redhat.com/git/ && jspm config registries.github.handler jspm-git && jspm install && typings install && webdriver-manager update"
   },
   "repository": {
     "type": "git",
