@@ -1,0 +1,1 @@
+module.exports = require("npm:yargs@5.0.0/index.js");

@@ -1,0 +1,1 @@
+module.exports = require("npm:c3@0.4.10/c3.js");

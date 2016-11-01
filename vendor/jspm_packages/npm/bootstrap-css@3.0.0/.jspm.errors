@@ -1,0 +1,44 @@
+MultipleErrors: /home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:1:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:1:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:1:14: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:1:19: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:2:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:2:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:2:19: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:2:24: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:3:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:3:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:3:15: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:3:20: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:4:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:4:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:4:55: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:12:6: Unexpected token <
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:13:5: Unexpected token <
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:13:22: Unexpected token <
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:14:5: Unexpected token <
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:14:54: Expected '/' in regular expression literal
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:15:39: Unexpected token ...
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:15:43: Expected '/' in regular expression literal
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:16:4: Expected '/' in regular expression literal
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:20:1: Unexpected reserved word export
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:20:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:20:8: Unexpected reserved word default
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/components/Demo.js:20:16: Semi-colon expected
+
+MultipleErrors: /home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:1:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:1:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:1:14: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:1:19: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:2:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:2:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:2:17: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:2:22: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:3:1: Unexpected reserved word import
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:3:8: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:3:13: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:3:18: Semi-colon expected
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:7:9: Unexpected token <
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:8:13: Unexpected token <
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:8:20: Unexpected token >
+/home/jenkins/.jspm/packages/npm/bootstrap-css@3.0.0/example/src/index.js:9:10: Expected '/' in regular expression literal

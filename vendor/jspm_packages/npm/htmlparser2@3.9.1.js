@@ -1,0 +1,1 @@
+module.exports = require("npm:htmlparser2@3.9.1/lib/index.js");

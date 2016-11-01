@@ -54,7 +54,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "jspm install && typings install && webdriver-manager update"
+    "postinstall": "webdriver-manager update"
   },
   "repository": {
     "type": "git",

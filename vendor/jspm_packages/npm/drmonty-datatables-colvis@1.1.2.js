@@ -1,0 +1,1 @@
+module.exports = require("npm:drmonty-datatables-colvis@1.1.2/js/dataTables.colVis.js");

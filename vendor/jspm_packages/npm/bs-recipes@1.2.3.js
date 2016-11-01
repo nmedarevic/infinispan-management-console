@@ -1,0 +1,1 @@
+module.exports = require("npm:bs-recipes@1.2.3/index.js");

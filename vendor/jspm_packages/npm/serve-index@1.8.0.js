@@ -1,0 +1,1 @@
+module.exports = require("npm:serve-index@1.8.0/index");

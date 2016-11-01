@@ -1,0 +1,4 @@
+MultipleErrors: /home/jenkins/.jspm/packages/npm/c3@0.4.10/src/head.js:5:1: Unexpected token End of File
+/home/jenkins/.jspm/packages/npm/c3@0.4.10/src/head.js:5:1: Unexpected token End of File
+
+MultipleErrors: /home/jenkins/.jspm/packages/npm/c3@0.4.10/src/tail.js:9:1: Unexpected token }

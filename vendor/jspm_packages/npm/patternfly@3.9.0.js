@@ -1,0 +1,1 @@
+module.exports = require("npm:patternfly@3.9.0/dist/js/patternfly");

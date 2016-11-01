@@ -1,0 +1,1 @@
+module.exports = require("npm:datatables.net-colreorder@1.3.2/js/dataTables.colReorder.js");

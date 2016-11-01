@@ -1,6 +1,6 @@
 node
 node_modules
-dist
+/dist
 !dist/index.html
 .idea
 .tmp
@@ -9,13 +9,13 @@ dist
 .project
 .classpath
 src/main/bower_components
-target
+/target
 *.iml
 *.pyc
-vendor/
-typings/
+#vendor/
+#typings/
 report/
-docs/
+/docs/
 src/**/*.js
 src/**/*.js.map
 src/**/*.css

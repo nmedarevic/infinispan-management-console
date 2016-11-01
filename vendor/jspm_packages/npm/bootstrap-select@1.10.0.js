@@ -1,0 +1,1 @@
+module.exports = require("npm:bootstrap-select@1.10.0/dist/js/bootstrap-select.js");
