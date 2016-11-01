@@ -10,6 +10,7 @@ import {ICacheContainer} from "../container/ICacheContainer";
 import {JGroupsService} from "../jgroups/JGroupsService";
 import {isNullOrUndefined} from "../../common/utils/Utils";
 import {ICacheConfiguration} from "../cache-config/ICacheConfiguration";
+import {MemoryData} from "../../components/memory/MemoryData";
 
 const module: ng.IModule = App.module("managementConsole.services.cache", []);
 
@@ -106,6 +107,11 @@ export class CacheService {
       recursive: true
     };
     return this.dmrService.readResource(request);
+  }
+
+  getCacheMemoryStats(container: ICacheContainer, cache: ICache): ng.IPromise<MemoryData> {
+    // TODO wire real API call when wburns implements DMR op
+    return this.$q.when(new MemoryData(4.2, 6.5, 3.5, 7.2));
   }
 
   getCacheStatsForServers(container: ICacheContainer, cache: ICache): ng.IPromise<any[]> {

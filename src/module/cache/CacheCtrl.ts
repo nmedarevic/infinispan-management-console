@@ -7,9 +7,11 @@ import {ICache} from "../../services/cache/ICache";
 import IModalServiceInstance = angular.ui.bootstrap.IModalServiceInstance;
 import IModalService = angular.ui.bootstrap.IModalService;
 import {LaunchTypeService} from "../../services/launchtype/LaunchTypeService";
+import {MemoryData} from "../../components/memory/MemoryData";
 
 export class CacheCtrl {
-  static $inject: string[] = ["$state", "$interval", "$uibModal", "cacheService", "launchType", "container", "cache", "stats", "cacheEnabledRSP"];
+  static $inject: string[] = ["$state", "$interval", "$uibModal", "cacheService", "launchType",
+    "container", "cache", "stats", "memoryData", "cacheEnabledRSP"];
 
   private cacheEnabled: boolean;
   private errorExecuting: boolean;
@@ -19,7 +21,7 @@ export class CacheCtrl {
   constructor(private $state: IStateService, private $interval: IIntervalService,
               private $uibModal: IModalService, private cacheService: CacheService,
               private launchType: LaunchTypeService, private container: ICacheContainer,
-              private cache: ICache, private stats: any, private cacheEnabledRSP: any) {
+              private cache: ICache, private stats: any, private memoryData: MemoryData, private cacheEnabledRSP: any) {
     this.cacheEnabled = !cacheEnabledRSP[cache.name];
   }
 
