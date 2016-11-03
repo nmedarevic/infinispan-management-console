@@ -159,5 +159,7 @@
   "YES":"Yes",
   "NEXT":"Next",
   "CLOSE":"Close",
-  "LOADING": "Loading"
+  "LOADING": "Loading",
+  "MEMORY_USAGE": "Memory usage",
+  "NODES": "Nodes"
   }
