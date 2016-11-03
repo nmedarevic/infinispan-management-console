@@ -15,7 +15,6 @@ export class NodesMemoryCtrl {
   static $inject: string[] = ["$state", "$uibModal", "dmrService", "serverGroupService", "serverService",
     "jGroupsService", "launchType", "serverMemoryData", "serverGroup", "available"];
 
-  private data: MemoryData;
   status: string = "DEGRADED";
   serverStatusMap: IMap<string> = {};
   serverInetMap: IMap<string> = {};

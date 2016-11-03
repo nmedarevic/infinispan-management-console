@@ -5,7 +5,6 @@ import {IServerAddress} from "../server/IServerAddress";
 import {ICacheContainer} from "../container/ICacheContainer";
 import {ISchemaDefinition} from "./ISchemaDefinition";
 import {LaunchTypeService} from "../launchtype/LaunchTypeService";
-import {IDmrRequest} from "../dmr/IDmrRequest";
 import {IServerGroup} from "../server-group/IServerGroup";
 
 const module: ng.IModule = App.module("managementConsole.services.schemas", []);

@@ -4,7 +4,6 @@ import {IParseService} from "angular";
 import ICompiledExpression = angular.ICompiledExpression;
 import IAugmentedJQuery = angular.IAugmentedJQuery;
 import IScope = angular.IScope;
-import IAttributes = angular.IAttributes;
 import IDirective = angular.IDirective;
 import IDirectiveFactory = angular.IDirectiveFactory;
 
@@ -23,9 +22,9 @@ export class FileModelDirective implements IDirective {
   constructor(private $parse: IParseService) {
   }
 
-  public link: Function = (scope: IScope, element: IAugmentedJQuery, attrs: IAttributes) => {
+  public link: Function = (scope: IScope, element: IAugmentedJQuery, attrs /*: IAttributes*/) => {
     /*handle all your linking requirements here*/
-    let model: ICompiledExpression = this.$parse(attrs["fileModel"]);
+    let model: ICompiledExpression = this.$parse(attrs.fileModel);
     let modelSetter: any = model.assign;
 
     element.bind("change", () => {

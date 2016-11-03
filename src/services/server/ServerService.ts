@@ -9,7 +9,6 @@ import {Server} from "../server/Server";
 import {StandaloneService} from "../standalone/StandaloneService";
 import {MemoryData} from "../../components/memory/MemoryData";
 
-
 const module: ng.IModule = App.module("managementConsole.services.server", []);
 
 export class ServerService {

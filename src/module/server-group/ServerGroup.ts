@@ -9,7 +9,6 @@ import {serverFilter} from "./nodes/ServerGroupFilter";
 import {NodesCtrl} from "./nodes/NodesCtrl";
 import {NodesMemoryCtrl} from "./memory/NodesMemoryCtrl";
 import {ServerService} from "../../services/server/ServerService";
-import {IServerAddress} from "../../services/server/IServerAddress";
 import {MemoryData} from "../../components/memory/MemoryData";
 import IQService = angular.IQService;
 import {IMap} from "../../common/utils/IMap";
@@ -29,9 +28,9 @@ module.config(($stateProvider: ng.ui.IStateProvider) => {
     redirectTo: "server-group.nodes",
     controllerAs: "ctrl",
     resolve: {
-      serverGroup: ["$stateParams", "serverGroupService", ($stateParams: IStateParamsService, serverGroupService: ServerGroupService) => {
+      serverGroup: ["$stateParams", "serverGroupService", ($stateParams, serverGroupService: ServerGroupService) => {
         // TODO add serverGroup object as optional parameter and if exists don't call service again unless refresh is true
-        let serverGroup: string = $stateParams["serverGroup"];
+        let serverGroup: string = $stateParams.serverGroup;
         return serverGroupService.getServerGroupMapWithMembers(serverGroup);
       }],
       available: ["$stateParams", "serverGroupService", "serverGroup",
@@ -63,10 +62,6 @@ module.config(($stateProvider: ng.ui.IStateProvider) => {
               responses[member.toString()] = response;
             });
           }
-          /*let server:IServerAddress = serverGroup.members[0];
-          serverService.getServerMemoryStats(server).then((response: MemoryData) => {
-            responses[server.toString()] = response;
-          });*/
           deferred.resolve(responses);
           return deferred.promise;
         }],
