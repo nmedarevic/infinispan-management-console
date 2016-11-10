@@ -87,6 +87,49 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                    <id>default-cli</id>
+                    <configuration>
+                    <target>
+                        <echo message="== Copying back npm-shrinkwrap.json into output dir omitting resolved lines..."></echo>
+                        <copy file="${project.basedir}/npm-shrinkwrap.json" tofile="${project.build.outputDirectory}/npm-shrinkwrap.json">
+                            <filterchain>
+                                <linecontainsregexp negate="true">
+                                    <regexp pattern="&quot;resolved&quot;:\s*&quot;\S*&quot;\S*"></regexp>
+                                </linecontainsregexp>
+                            </filterchain>
+                        </copy>
+                        <echo message="== Cleaning from lines in npm-shrinkwrap.json file..."></echo>
+                        <replaceregexp
+                            byline="false"
+                            flags="mg"
+                            file="${project.build.outputDirectory}/npm-shrinkwrap.json"
+                            match="(&quot;from&quot;:\s*&quot;)(https://registry\.npmjs\.org/\S*/-/)" replace="\1">
+                        </replaceregexp>
+                        <!--
+                          The stripping of "resolved" lines may have left the json file broken (formatting).
+                          This section removes ',' followed by '}', which is not accepted by npm installation
+                        -->
+                        <replaceregexp
+                            byline="false"
+                            flags="mg"
+                            file="${project.build.outputDirectory}/npm-shrinkwrap.json"
+                            match="(,\s*)(${line.separator}\s*})" replace="\2">
+                        </replaceregexp>
+                    </target>
+                    </configuration>
+                   <goals>
+                       <goal>run</goal>
+                   </goals>
+                   </execution>
+               </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>0.0.24.redhat-001</version>
