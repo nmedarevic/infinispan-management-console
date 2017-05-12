@@ -61,7 +61,7 @@ module.config(($stateProvider: ng.ui.IStateProvider) => {
 
   $stateProvider.state("edit-endpoint-config", {
     parent: "root",
-    url: "/server-groups/:serverGroup/endpoints/:endpointType/:endpointName/config",
+    url: "server-groups/:serverGroup/endpoints/:endpointType/:endpointName/config",
     controller: EndpointConfigCtrl,
     controllerAs: "ctrl",
     templateUrl: "module/server-group/endpoints/config/view/endpoint-config.html",
@@ -84,7 +84,7 @@ module.config(($stateProvider: ng.ui.IStateProvider) => {
 
   $stateProvider.state("new-endpoint-config", {
     parent: "root",
-    url: "/server-groups/:serverGroup/endpoints/:endpointType/:endpointName/newEndpoint",
+    url: "server-groups/:serverGroup/endpoints/:endpointType/:endpointName/newEndpoint",
     controller: EndpointConfigCtrl,
     controllerAs: "ctrl",
     templateUrl: "module/server-group/endpoints/config/view/endpoint-config.html",

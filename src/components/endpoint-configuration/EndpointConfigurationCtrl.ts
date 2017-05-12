@@ -2,11 +2,11 @@ import {IConfigurationCallback} from "../../common/configuration/IConfigurationC
 import {getMetaForResource} from "../../common/configuration/ConfigUtil";
 import {ICacheContainer} from "../../services/container/ICacheContainer";
 import {deepGet} from "../../common/utils/Utils";
+import {ModalService} from '../../services/modal/ModalService';
 
 export class EndpointConfigurationCtrl {
 
   endpointType: string;
-  //container: ICacheContainer;
   data: any;
   meta: any;
   initDefaults: boolean;
@@ -34,6 +34,11 @@ export class EndpointConfigurationCtrl {
     onClick: false,
     onDblClick: false
   };
+
+  static $inject: string[] = ["modalService"]; 
+  constructor(public modalService: ModalService) {
+
+  }
 
 
   traverse(): void {

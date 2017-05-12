@@ -29,7 +29,6 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
               private endpointType: string,
               private endpointName: string) {
     super();
-    console.log(endpoint);
   }
 
   goToContainerCachesView(): void {
