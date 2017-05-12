@@ -14,6 +14,8 @@ import "angular-local-storage";
 import "angular-ui-bootstrap";
 import "angular-ui-bootstrap/dist/ui-bootstrap-tpls.js";
 import "angular-ui-router";
+import 'c3/c3.js';
+import 'd3/d3.js';
 import "patternfly/dist/js/patternfly.js";
 import "angular-translate";
 import "angular-translate-loader-static-files";
@@ -39,6 +41,7 @@ import IModalService = angular.ui.bootstrap.IModalService;
 import IAugmentedJQuery = angular.IAugmentedJQuery;
 import {LaunchTypeService} from "./services/launchtype/LaunchTypeService";
 import {IdGeneratorDirective} from "./components/directives/IdGeneratorDirective";
+import {CollapsibleComponent} from "./components/collapsible/CollapsibleComponent";
 
 const App: ng.IAngularStatic = angular;
 
@@ -48,7 +51,8 @@ const module: ng.IModule = angular.module("managementConsole", [
   "pascalprecht.translate",
   "ngSanitize",
   "dndLists",
-  "patternfly"
+  "patternfly",
+  "patternfly.charts"
 ]);
 
 // @ngInject
@@ -79,6 +83,8 @@ module.directive("fileModel", () => {
 module.directive("vertilizeContainer", VertilizeContainerDirective.factory());
 module.directive("vertilize", VertilizeDirective.factory());
 module.directive("idGenerator", IdGeneratorDirective.factory());
+
+module.component('collapsible', new CollapsibleComponent());
 
 // @ngInject
 module.config(($urlRouterProvider: ng.ui.IUrlRouterProvider) => {

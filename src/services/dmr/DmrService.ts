@@ -167,7 +167,6 @@ export class DmrService {
           msg = result["failure-description"];
         }
       }
-      console.log(msg);
       promise.reject(msg);
     }
   }

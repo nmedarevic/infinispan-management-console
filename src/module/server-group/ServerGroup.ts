@@ -34,4 +34,9 @@ module.config(($stateProvider: ng.ui.IStateProvider) => {
         }]
     }
   });
+
+  $stateProvider.state("server-group.nodes", {
+    url: "/nodes",
+    templateUrl: "module/server-group/nodes/view/server-group.html"
+  });
 });
