@@ -33,15 +33,10 @@ System.config({
 
   map: {
     "angular": "npm:angular@1.5.11",
-<<<<<<< HEAD
     "angular-drag-and-drop-lists": "npm:angular-drag-and-drop-lists@2.0.0",
     "angular-local-storage": "npm:angular-local-storage@0.5.0",
     "angular-patternfly": "npm:angular-patternfly@4.0.0-rc.1",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.11",
-=======
-    "angular-local-storage": "npm:angular-local-storage@0.5.0",
-    "angular-patternfly": "npm:angular-patternfly@4.0.0-rc.1",
->>>>>>> ea4c236... patternfly loading.
     "angular-translate": "github:angular-translate/bower-angular-translate@2.11.1",
     "angular-translate-loader-static-files": "github:angular-translate/bower-angular-translate-loader-static-files@2.11.1",
     "angular-ui-bootstrap": "npm:angular-ui-bootstrap@2.2.0",
