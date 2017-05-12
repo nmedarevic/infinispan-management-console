@@ -17,7 +17,8 @@ export class Endpoint implements IEndpoint {
       "idle-timeout": data["idle-timeout"],
       "tcp-nodelay": data["tcp-nodelay"],
       "send-buffer-size": data["end-buffer-size"],
-      "receive-buffer-size": data["receive-buffer-size"]
+      "receive-buffer-size": data["receive-buffer-size"],
+      "socket-binding": data["socket-binding"]
     };
   }
 
