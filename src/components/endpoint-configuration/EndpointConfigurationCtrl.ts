@@ -14,6 +14,32 @@ export class EndpointConfigurationCtrl {
   readOnlyFields: string[];
   configCallbacks: IConfigurationCallback[];
 
+  listConfig: any = {
+    selectItems: false,
+    multiSelect: false,
+    dblClick: false,
+    dragEnabled: false,
+    dragEnd: false,
+    dragMoved: false,
+    dragStart: false,
+    selectionMatchProp: 'name',
+    selectedItems: [],
+    itemsAvailable: true,
+    checkDisabled: false,
+    showSelectBox: false,
+    useExpandingRows: false,
+    onSelect: false,
+    onSelectionChange: false,
+    onCheckBoxChange: false,
+    onClick: false,
+    onDblClick: false
+  };
+
+
+  traverse(): void {
+
+  }
+
   getTemplateUrl(): string {
     return "components/endpoint-configuration/view/" + this.endpointType + ".html";
   }

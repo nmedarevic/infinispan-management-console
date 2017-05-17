@@ -5,10 +5,12 @@ import {LaunchTypeService} from "../../../../services/launchtype/LaunchTypeServi
 import {ServerGroupService} from "../../../../services/server-group/ServerGroupService";
 import {IServerGroup} from "../../../../services/server-group/IServerGroup";
 import {IEndpoint} from "../../../../services/endpoint/IEndpoint";
-import {openConfirmationModal, openErrorModal} from "../../../../common/dialogs/Modals";
+import {openConfirmationModal, openErrorModal, openRestartModal} from "../../../../common/dialogs/Modals";
+import {CompositeOpBuilder} from "../../../../services/dmr/CompositeOpBuilder";
+import {EndpointService} from "../../../../services/endpoint/EndpointService";
 
 export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
-  static $inject: string[] = ["$state", "$scope", "$uibModal", "serverGroupService", "launchType",
+  static $inject: string[] = ["$state", "$scope", "$uibModal", "serverGroupService", "endpointService", "launchType",
     "serverGroup", "endpoint", "endpointMeta", "endpointType", "endpointName"];
 
   readOnlyFields: string[];
@@ -19,6 +21,7 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
               private $scope: ng.IScope,
               private $uibModal: IModalService,
               private serverGroupService: ServerGroupService,
+              private endpointService: EndpointService,
               private launchType: LaunchTypeService,
               private serverGroup: IServerGroup,
               private endpoint: IEndpoint,
@@ -26,9 +29,7 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
               private endpointType: string,
               private endpointName: string) {
     super();
-    /*if (!this.isEditMode()) {
-      setIsNewNodeRecursively(this.template);
-    }*/
+    console.log(endpoint);
   }
 
   goToContainerCachesView(): void {
@@ -39,7 +40,11 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
   }
 
   goToEndpointsView(): void {
-    this.$state.go("server-group.endpoints", {});
+    this.$state.go("server-group.endpoints", {serverGroup: this.serverGroup.name});
+  }
+
+  save(endpoint: IEndpoint): ng.IPromise<any> {
+    return this.endpointService.save(endpoint);
   }
 
   isEditMode(): boolean {
@@ -61,15 +66,27 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
      });*/
   }
 
-  updateEndpoint(): void {
-    /*openConfirmationModal(this.$uibModal, "Update " + this.endpoint.name + " endpoint?")
-      .result.then(() => {
-      this.endpointService.updateEndpoint(this.container, this.template.type, this.template["template-name"], this.template)
-        .then(() => this.goToEndpointsView(), error => openErrorModal(this.$uibModal, error));
-    });*/
-  }
-
-  private reloadMetaAndDataOnTypeChange(newType: string, oldType: string): void {
-
+  updateEndpoint(endpoint:IEndpoint): void {
+    openConfirmationModal(this.$uibModal, "Update endpoint " + this.endpoint.getName() + "?").result.then(() => {
+      this.save(endpoint)
+        .then(() => {
+            if (this.launchType.isStandaloneMode()) {
+              openConfirmationModal(this.$uibModal,
+                "Config changes will only be made available after you manually restart the server!").result.then(() => {
+                this.goToEndpointsView();
+              }, () => {
+                this.goToEndpointsView();
+              });
+            } else {
+              openRestartModal(this.$uibModal).result.then(() => {
+                this.serverGroupService.restartServers(this.serverGroup).then(() => this.goToEndpointsView());
+              }, () => {
+                this.goToEndpointsView();
+              });
+            }
+            this.cleanMetaData();
+          },
+          error => openErrorModal(this.$uibModal, error));
+    });
   }
 }

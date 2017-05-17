@@ -57,6 +57,10 @@ export class Endpoint implements IEndpoint {
     return deepGet(this.data, path);
   }
 
+  getDMR(): any {
+    return this.data;
+  }
+
   toString(): string {
     return this.connector.name.toString();
   }

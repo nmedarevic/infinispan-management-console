@@ -72,9 +72,9 @@ export class ConfigurationSectionCtrl implements IConfigurationCallback {
       group.fields.forEach(attrName => {
         let data: any = this.resolveObject(this.data, group.dataPath);
         let meta: any = this.resolveObject(this.meta, group.metaPath);
-        convertListToJson(data, meta, attrName);
         this.cleanFieldMeta(meta, attrName);
         if (isNotNullOrUndefined(data)) {
+          convertListToJson(data, meta, attrName);
           this.prevData[attrName] = isNotNullOrUndefined(data[attrName]) ? angular.copy(data[attrName]) : "";
         } else {
           console.log("Could not resolve data object for attribute " +
