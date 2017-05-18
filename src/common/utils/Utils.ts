@@ -134,6 +134,19 @@ export function traverse(obj: any, callback: Function, trail?: any[]): void {
   });
 }
 
+export function traverseObject(obj: any, callback: Function, trail?: any[]): void {
+  trail = trail || [];
+  Object.keys(obj).forEach((key) => {
+    var value: any = obj[key];
+
+    if (isNotNullOrUndefined(value) && Object.getPrototypeOf(value) === Object.prototype) {
+      traverseObject(value, callback, trail.concat(key));
+      callback.call(obj, key, value, trail);
+    }
+  });
+}
+
+
 export function parseServerAddress(server: string): IServerAddress {
   let address: string[] = server.split(":");
   if (address.length !== 2) {

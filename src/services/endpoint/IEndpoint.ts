@@ -11,4 +11,5 @@ export interface IEndpoint {
   getSocketBinding(): ISocketBinding;
   isMultiTenant(): boolean;
   getObject(path: string): any;
+  getDMR(): any;
 }

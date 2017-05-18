@@ -3,17 +3,32 @@ import {IServerGroup} from "../../../services/server-group/IServerGroup";
 import {IEndpoint} from "../../../services/endpoint/IEndpoint";
 import {AddEndpointModalCtrl} from "./AddEndpointModalCtrl";
 import {isNotNullOrUndefined} from "../../../common/utils/Utils";
+import {EndpointService} from "../../../services/endpoint/EndpointService";
+import {CompositeOpBuilder} from "../../../services/dmr/CompositeOpBuilder";
+import {DmrService} from "../../../services/dmr/DmrService";
 
 export class EndpointsCtrl {
-  static $inject: string[] = ["$uibModal", "serverGroup", "endpoints"];
+  static $inject: string[] = ["$uibModal", "endpointService", "dmrService", "serverGroup", "endpoints"];
 
   constructor(private $uibModal: IModalService,
+              private endpointService: EndpointService,
+              private dmrService: DmrService,
               private serverGroup: IServerGroup,
               private endpoints: IEndpoint[]){
   }
 
   execute(): void{
 
+  }
+
+  traverse(endpoint: IEndpoint): void {
+    this.endpointService.createDRMOps(endpoint);
+  }
+
+  save(endpoint: IEndpoint): void {
+    let builder: CompositeOpBuilder = this.endpointService.createDRMOps(endpoint);
+    this.dmrService.executePost(builder.build());
+    console.log("Saved " + builder);
   }
 
   isEndpointEnabled(endpoint: IEndpoint): boolean {

@@ -36,6 +36,9 @@ export class EndpointConfigurationCtrl {
   };
 
 
+  traverse(): void {
+
+  }
 
   getTemplateUrl(): string {
     return "components/endpoint-configuration/view/" + this.endpointType + ".html";

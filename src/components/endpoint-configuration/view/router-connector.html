@@ -8,11 +8,6 @@
     </uib-tab>
 
     <uib-tab heading="Hotrod">
-      <configuration-section fields="[{name: 'Hotrod', fields: ['name'], dataPath: 'hotrod.HOTROD', metaPath:'hotrod.model-description.*.attributes'}]"
-                             data="$ctrl.data['multi-tenancy'].MULTI_TENANCY" meta="$ctrl.getMetaRootForResource('.children.multi-tenancy.model-description.*.children')"
-                             init-defaults="initDefaults" read-only="$ctrl.readOnly"
-                             config-callbacks="$ctrl.configCallbacks" removable="true"/>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="row">
@@ -52,10 +47,6 @@
     </uib-tab>
 
     <uib-tab heading="REST">
-      <configuration-section fields="[{name: 'REST connector', fields: ['name'], dataPath: 'rest.REST', metaPath:'rest.model-description.*.attributes'}]"
-                             data="$ctrl.data['multi-tenancy'].MULTI_TENANCY" meta="$ctrl.getMetaRootForResource('.children.multi-tenancy.model-description.*.children')"
-                             init-defaults="initDefaults" read-only="$ctrl.readOnly"
-                             config-callbacks="$ctrl.configCallbacks" removable="true"/>
 
       <div class="panel panel-default">
         <div class="panel-heading">

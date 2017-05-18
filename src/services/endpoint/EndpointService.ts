@@ -8,7 +8,7 @@ import IQService = angular.IQService;
 import {LaunchTypeService} from "../launchtype/LaunchTypeService";
 import {
   isNotNullOrUndefined, traverse, deepValue, isNullOrUndefined, isObject,
-  isJsonString
+  isJsonString, traverseObject
 } from "../../common/utils/Utils";
 import {ICacheContainer} from "../container/ICacheContainer";
 import {IServerGroup} from "../server-group/IServerGroup";
@@ -33,7 +33,7 @@ export class EndpointService {
 
   getAllEndpoints(cacheContainer: ICacheContainer): ng.IPromise<IEndpoint[]> {
     let request: IDmrRequest = <IDmrRequest>{
-      address: this.getEndpointAddress(cacheContainer.profile),
+      address: this.getEndpointsRootAddress(cacheContainer.profile),
       recursive: true
     };
     let deferred: ng.IDeferred<IEndpoint[]> = this.$q.defer<IEndpoint[]>();
@@ -70,7 +70,7 @@ export class EndpointService {
   getEndpoint(serverGroup: IServerGroup, endpointType: string, name: string): ng.IPromise<IEndpoint> {
     let resolvedName: string = isNotNullOrUndefined(name) ? name : endpointType;
     let request: IDmrRequest = <IDmrRequest>{
-      address: this.getEndpointAddress(serverGroup.profile).concat(endpointType).concat(resolvedName),
+      address: this.getEndpointsRootAddress(serverGroup.profile).concat(endpointType).concat(resolvedName),
       recursive: true,
     };
     return this.dmrService.readResource(request);
@@ -78,7 +78,7 @@ export class EndpointService {
 
   getAllClusterEndpoints(serverGroup: IServerGroup): ng.IPromise<IEndpoint[]> {
     let request: IDmrRequest = <IDmrRequest>{
-      address: this.getEndpointAddress(serverGroup.profile),
+      address: this.getEndpointsRootAddress(serverGroup.profile),
       recursive: true
     };
     let deferred: ng.IDeferred<IEndpoint[]> = this.$q.defer<IEndpoint[]>();
@@ -112,7 +112,7 @@ export class EndpointService {
 
   getConfigurationMeta(profile: string, endpointType: string, endpointName: string): ng.IPromise<any> {
     let deferred: ng.IDeferred<any> = this.$q.defer();
-    let address: string[] = this.getEndpointAddress(profile).concat(endpointType).concat(endpointType);
+    let address: string[] = this.getEndpointsRootAddress(profile).concat(endpointType).concat(endpointType);
     this.dmrService.readResourceDescription({
       address: address,
       recursive: true
@@ -125,18 +125,28 @@ export class EndpointService {
     return deferred.promise;
   }
 
-  updateEndpoint(serverGroup: IServerGroup, address: string[], config:any): ng.IPromise<IEndpoint> {
+  createDRMOps(endpoint: IEndpoint): CompositeOpBuilder {
     let builder: CompositeOpBuilder = new CompositeOpBuilder();
-    let exludedAttributes: string[] = ["name", "type", "template-name", "is-new-node", "is-create-with-bare-template",
-      "is-create-mode", "store-type", "store-original-type", "required-node"];
+    let root: any = endpoint.getDMR();
+    let dmrAddress: String [] = this.getEndpointAddress(endpoint, "clustered");
+    this.traverseModelTree(builder, root, dmrAddress);
+    console.log(builder);
+    return builder;
+  }
 
-    // Update the configuration node
-    this.addCompositeOperationsToBuilder(builder, address, config, exludedAttributes);
-    this.composeWriteObjectOperations(builder, address, config);
+  traverseModelTree(builder: CompositeOpBuilder, dmrRoot: any, dmrAddress: string []) {
+    //traverse the object tree
+    traverseObject(dmrRoot, (key: string, value: any, trail: string []) => {
+      this.visitTraversedObject(builder, value, trail.concat(key));
+    }, dmrAddress);
 
-    // Update child nodes
-    this.updateHelper(builder, address.concat("locking", "LOCKING"), config.locking);
-    return this.dmrService.executePost(builder.build());
+    //and finally visit root object itself...
+    this.visitTraversedObject(builder, dmrRoot, dmrAddress);
+  }
+
+  private visitTraversedObject(builder: CompositeOpBuilder, obj: any,
+                               address: string[]) {
+    this.addCompositeOperationsToBuilder(builder, address, obj, []);
   }
 
   private addSocketBindingToEndpoint(socketBindings: ISocketBinding[], endpoints: IEndpoint[]): void {
@@ -149,31 +159,16 @@ export class EndpointService {
     }
   }
 
-  private getEndpointAddress(profile: string): string[] {
+  private getEndpointsRootAddress(profile: string): string[] {
     let endpointPath: string[] = ["subsystem", "datagrid-infinispan-endpoint"];
     return this.launchType.getProfilePath(profile).concat(endpointPath);
   }
 
-  private updateHelper(builder: CompositeOpBuilder, address: string[], config: any): void {
-    if (isNotNullOrUndefined(config)) {
-      // Same for LevelDB->Compression. TODO need a better way to make exceptions
-      let exclusionList: string[] = ["is-new-node", "store-type", "store-original-type", "is-dirty", "is-removed"];
-      if (isNullOrUndefined(config.COMPRESSION)) {
-        exclusionList.push("type");
-      }
-      this.addOperationsToBuilder(builder, address, config, exclusionList, false);
-    }
+  private getEndpointAddress(endpoint: IEndpoint, profile: string): string[] {
+    let endpointPath: string[] = ["subsystem", "datagrid-infinispan-endpoint"];
+    return this.launchType.getProfilePath(profile).concat(endpointPath).concat(endpoint.getType()).concat(endpoint.getName());
   }
 
-  private addOperationsToBuilder(builder: CompositeOpBuilder, address: string[], config: any,
-                                 excludedAttributes: string[], force: boolean): void {
-    if (isNotNullOrUndefined(config)) {
-      let modelNode: string = address.slice(-1).pop();
-      if (isNotNullOrUndefined(modelNode)) {
-        this.addCompositeOperationsToBuilder(builder, address, config[modelNode], excludedAttributes, force);
-      }
-    }
-  };
 
   private addCompositeOperationsToBuilder(builder: CompositeOpBuilder, address: string[], config: any,
                                           excludedAttributes: string[], force: boolean = false): void {
