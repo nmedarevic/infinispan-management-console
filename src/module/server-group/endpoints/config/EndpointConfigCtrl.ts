@@ -58,12 +58,28 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
     return true;
   }
 
-  createEndpoint(): void {
-    /*openConfirmationModal(this.$uibModal, "Create " + this.endpoint.name + " endpoint?")
-     .result.then(() => {
-     this.endpointService.createEndpoint(this.container, this.template.type, this.template["template-name"], this.template)
-     .then(() => this.goToEndpointsView(), error => openErrorModal(this.$uibModal, error));
-     });*/
+  createEndpoint(endpoint:IEndpoint): void {
+    openConfirmationModal(this.$uibModal, "Create endpoint " + this.endpoint.getName() + "?").result.then(() => {
+      this.save(endpoint)
+        .then(() => {
+            if (this.launchType.isStandaloneMode()) {
+              openConfirmationModal(this.$uibModal,
+                "Config changes will only be made available after you manually restart the server!").result.then(() => {
+                this.goToEndpointsView();
+              }, () => {
+                this.goToEndpointsView();
+              });
+            } else {
+              openRestartModal(this.$uibModal).result.then(() => {
+                this.serverGroupService.restartServers(this.serverGroup).then(() => this.goToEndpointsView());
+              }, () => {
+                this.goToEndpointsView();
+              });
+            }
+            this.cleanMetaData();
+          },
+          error => openErrorModal(this.$uibModal, error));
+    });
   }
 
   updateEndpoint(endpoint:IEndpoint): void {

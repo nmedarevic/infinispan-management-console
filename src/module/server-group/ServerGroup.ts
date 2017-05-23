@@ -81,4 +81,27 @@ module.config(($stateProvider: ng.ui.IStateProvider) => {
       endpointType: ["$stateParams", ($stateParams) => $stateParams.endpointType]
     }
   });
+
+  $stateProvider.state("new-endpoint-config", {
+    parent: "root",
+    url: "/server-groups/:serverGroup/endpoints/:endpointType/:endpointName/newEndpoint",
+    controller: EndpointConfigCtrl,
+    controllerAs: "ctrl",
+    templateUrl: "module/server-group/endpoints/config/view/endpoint-config.html",
+    resolve: {
+      serverGroup: ["$stateParams", "serverGroupService", ($stateParams, serverGroupService, endpointService) => {
+        // TODO add serverGroup object as optional parameter and if exists don't call service again unless refresh is true
+        let serverGroup: string = $stateParams.serverGroup;
+        return serverGroupService.getServerGroupMapWithMembers(serverGroup);
+      }],
+      endpoint: ["$stateParams", "endpointService", "serverGroup", ($stateParams, endpointService, serverGroup) => {
+        return EndpointService.parseEndpoint([].concat($stateParams.endpointType).concat($stateParams.endpointName), {});
+      }],
+      endpointMeta: ["$stateParams", "endpointService", "serverGroup", ($stateParams, endpointService, serverGroup) => {
+        return endpointService.getConfigurationMeta(serverGroup.profile,  $stateParams.endpointType,  $stateParams.endpointType);
+      }],
+      endpointName: ["$stateParams", ($stateParams) => $stateParams.endpointName],
+      endpointType: ["$stateParams", ($stateParams) => $stateParams.endpointType]
+    }
+  });
 });

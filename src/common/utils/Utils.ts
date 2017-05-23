@@ -40,6 +40,14 @@ export function isNullOrUndefined(value: any): boolean {
 
 }
 
+export function createObjectsFromPath(name, separator, container){
+  var ns = name.split(separator || '.'), o = container || window, i, len;
+  for(i = 0, len = ns.length; i < len; i++){
+    o = o[ns[i]] = o[ns[i]] || {};
+  }
+  return o;
+}
+
 export function isNonEmptyArray(array: any[]): boolean {
   return isNotNullOrUndefined(array) && array.length > 0;
 }

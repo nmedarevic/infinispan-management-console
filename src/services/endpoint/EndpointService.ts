@@ -16,6 +16,7 @@ import {IServerAddress} from "../server/IServerAddress";
 import {CompositeOpBuilder, createWriteAttrReq} from "../dmr/CompositeOpBuilder";
 import IPromise = angular.IPromise;
 import {Endpoint} from "./Endpoint";
+import {IDmrCompositeReq} from "../dmr/IDmrCompositeReq";
 
 const module: ng.IModule = App.module("managementConsole.services.endpoint", []);
 
@@ -132,7 +133,9 @@ export class EndpointService {
     let dmrAddress: string [] = this.getEndpointAddress(endpoint, "clustered");
     let excludedAttributes: string [] = ["socket-binding", "is-new-node"];
     this.dmrService.traverseDMRTree(builder, root, dmrAddress, excludedAttributes);
-    return this.dmrService.executePost(builder.build());
+    let req: IDmrCompositeReq  = builder.build();
+    req.steps = req.steps.reverse();
+    return this.dmrService.executePost(req);
   }
 
   private addSocketBindingToEndpoint(socketBindings: ISocketBinding[], endpoints: IEndpoint[]): void {

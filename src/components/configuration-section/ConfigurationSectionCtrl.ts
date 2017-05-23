@@ -1,4 +1,4 @@
-import {isNotNullOrUndefined, isNullOrUndefined, deepGet} from "../../common/utils/Utils";
+import {isNotNullOrUndefined, isNullOrUndefined, deepGet, createObjectsFromPath} from "../../common/utils/Utils";
 import {IConfigurationCallback} from "../../common/configuration/IConfigurationCallback";
 import {
   isFieldValueModified,
@@ -16,6 +16,7 @@ export class ConfigurationSectionCtrl implements IConfigurationCallback {
   initDefaults: boolean;
   readOnly: boolean;
   readOnlyFields: string[];
+  render: boolean;
   configCallbacks: IConfigurationCallback[];
   removable: boolean;
   placeholders: any;
@@ -29,6 +30,17 @@ export class ConfigurationSectionCtrl implements IConfigurationCallback {
     if (isNotNullOrUndefined(this.configCallbacks)) {
       this.configCallbacks.push(this);
     }
+    this.fields.forEach(group => {
+      if(isNotNullOrUndefined(group.dataPath)) {
+        let e: any = deepGet(this.data, group.dataPath);
+        if (isNullOrUndefined(e)) {
+          createObjectsFromPath(group.dataPath, ".", this.data);
+          let data: any = this.resolveObject(this.data, group.dataPath);
+          data["is-new-node"] = true;
+        }
+      }
+    });
+
     this.prevData = {};
     let hasFieldsWithData: boolean = this.hasAnyFieldPreviousData();
     this.loadedWithData = hasFieldsWithData;
@@ -41,7 +53,7 @@ export class ConfigurationSectionCtrl implements IConfigurationCallback {
     let result:boolean = this.fields.some(group => {
       let dataObject: any = this.resolveObject(this.data, group.dataPath);
       if (isNotNullOrUndefined(dataObject)) {
-        return group.fields.some(attr => isNotNullOrUndefined([attr]), this);
+        return group.fields.some(attr => isNotNullOrUndefined(dataObject[attr]));
       } else {
         return false;
       }
