@@ -15,6 +15,8 @@ export class EndpointConfigurationCtrl {
   configCallbacks: IConfigurationCallback[];
 
   public newSni: any;
+  public newHotrod: any;
+  public hasChanged: boolean = false;
 
   listConfig: any = {
     selectItems: false,
@@ -44,6 +46,11 @@ export class EndpointConfigurationCtrl {
       hostName: '',
       securityRealm: '',
       sniName: ''
+    };
+
+    this.newHotrod = {
+      name:'',
+      hotrod: ''
     };
   }
 
@@ -76,4 +83,25 @@ export class EndpointConfigurationCtrl {
       return acc;
     }, {});
   }
+
+  public addNewHotrod() {
+    this.data['multi-tenancy'].MULTI_TENANCY.hotrod[this.newHotrod.hotrod] = {
+      name: this.newHotrod.name,
+      sni: null
+    };
+
+    this.newHotrod = {
+      hotrod: '',
+      name: ''
+    };
+
+    this.hasChanged = true;
+  }
+
+   public addNewSniToHotrod($event) {
+     this.data['multi-tenancy'].MULTI_TENANCY.hotrod[$event.hotrod.name].sni[$event.hostName] = {
+       'host-name': $event.hostName,
+       'security-realm': $event.securityRealm
+     };
+   }
 }

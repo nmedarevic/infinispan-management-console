@@ -79,8 +79,20 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
     });
   }
 
+  // THere is an unnecessary isExpanded prop in the tree. This parses it and removes it
+  // private removePatternFlyProps(targetObject: any, props: string[]) {
+  //   if (typeof targetObject === 'object' && targetObject.hasOwnProperty('length')) {
+  //     Object.keys(targetObject)
+  //   } else {
+  //     targetObject.forEach(obj => {
+  //       this.removePatternFlyProps(obj, props);
+  //     })
+  //   }
+  // }
+
   updateEndpoint(endpoint:IEndpoint): void {
     console.log(endpoint);
+    // removePatternFlyProps(endpoint, ['isExpanded']);
     let message: string = this.isEditMode()?"Update endpoint " + this.endpoint.getName() + "?": "Create endpoint " + this.endpoint.getName() + "?"
     openConfirmationModal(this.$uibModal, message).result.then(() => {
       this.update(endpoint)
