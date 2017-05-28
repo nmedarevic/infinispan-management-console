@@ -72,24 +72,7 @@
                   </div>
                 </div>
                 <list-expanded-content>
-                  <sni-list add-action="$ctrl.addNewSniToHotrod($event)" parent="$parent.item" list-id="'hotrod-list'"></sni-list>
-                  <!-- NEW SNI -->
-                  <!--<new-sni add-action="$ctrl.addNewSniToHotrod($event)" hotrod="$parent.item"></new-sni>
-                  
-                  <pf-list-view id="hotrod-inner"
-                                config="{selectionMatchProp: ''}"
-                                items="$parent.item.sni">
-                      <div class="list-view-pf-description">
-                        <div class="list-group-item-heading">
-                          <label class="control-label">Host name: </label>
-                          {{item['host-name']}}
-                        </div>
-                        <div class="list-group-item-text">
-                          <label class="control-label">Security realm: </label>
-                          {{item['security-realm']}}
-                        </div>
-                      </div>
-                    </pf-list-view>-->
+                  <sni-list add-action="$ctrl.addNewSniToMultiTenancyHotrod($event)" parent="$parent.item" list-id="'hotrod-list'"></sni-list>
                 </list-expanded-content>
               </pf-list-view>
               <!-- SNI LIST END -->
@@ -110,10 +93,10 @@
 
         <div class="panel-body">
           <div class="form-horizontal">
-
+            {{$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest}}
             <div class="col-md-12 list-view-container">
               <pf-list-view id="rest" config="{useExpandingRows:true}"
-                            items="::$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest">
+                            items="$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest">
                 <div class="list-view-pf-description">
                   <div class="list-group-item-heading">
                     {{item.name}}
@@ -121,6 +104,7 @@
                 </div>
                 <list-expanded-content>
                   <div class="col-md-8 list-view-container">
+                    {{$parent.item}};
                     <pf-list-view id="rest-inner"
                                   items="$parent.item.prefix">
                       <div class="list-group-item-text">
