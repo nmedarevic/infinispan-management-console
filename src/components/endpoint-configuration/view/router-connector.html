@@ -94,6 +94,12 @@
         <div class="panel-body">
           <div class="form-horizontal">
             <div class="col-md-12 list-view-container">
+              <add-node props="$ctrl.newRestConnectorProps"
+                node-id="rest-connector"
+                title="NEW_REST_CONNECTOR"
+                parent="$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest"
+                add-action="$ctrl.addNewConnectorToRest($event)">
+              </add-node>
               <pf-list-view id="rest"
                             config="{useExpandingRows:true}"
                             class="multi-tenancy"

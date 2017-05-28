@@ -18,6 +18,12 @@ export class EndpointConfigurationCtrl {
   public newHotrod: any;
   public hasChanged: boolean = false;
 
+  public newRestConnectorProps = [{
+    name: 'Connector name'
+  }, {
+    name: 'Name'
+  }];
+
   listConfig: any = {
     selectItems: false,
     multiSelect: false,
@@ -110,6 +116,13 @@ export class EndpointConfigurationCtrl {
         'host-name': $event.hostName,
         'security-realm': $event.securityRealm
       }
+   }
+
+   public addNewConnectorToRest($event) {
+     $event.parent[$event.newItem.connectorName] = {
+       'name': $event.newItem.name,
+       'prefix': ''
+     };
    }
 
    public removeItem($event) {
