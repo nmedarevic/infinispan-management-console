@@ -111,4 +111,8 @@ export class EndpointConfigurationCtrl {
         'security-realm': $event.securityRealm
       }
    }
+
+   public removeItem($event) {
+     console.log($event);
+   }
 }

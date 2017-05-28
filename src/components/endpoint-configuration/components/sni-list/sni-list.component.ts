@@ -7,6 +7,7 @@ export class SniListComponent {
   constructor() {
     this.bindings = {
       addAction: '&',
+      removeAction: '&',
       parent: '<',
       listId: '@'
     };
@@ -16,6 +17,23 @@ export class SniListComponent {
             $event: $event
           });
       };
+      this.remove = (action, item) => {
+        console.log(action, item);
+        this.removeAction({
+          $event: {
+            parent: this.parent,
+            item: item
+          }
+        });
+      };
+      this.actions = [
+        {
+          name: 'Remove',
+          class: 'btn btn-danger',
+          title: 'Remove node',
+          actionFn: this.remove
+        }
+      ];
     };
     this.templateUrl = 'components/endpoint-configuration/components/sni-list/sni-list.component.html';
   }

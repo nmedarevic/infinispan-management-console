@@ -50,9 +50,8 @@
 
             <div class="panel-body">
               <div class="form-horizontal">
-
                 <div class="col-md-12 list-view-container">
-                  <sni-list add-action="$ctrl.addNewSniToHotrod($event)" parent="$ctrl.data.encryption.ENCRYPTION" list-id="'hotrod-connector-list'"></sni-list>
+                  <sni-list add-action="$ctrl.addNewSniToHotrod($event)" remove-action="$ctrl.removeItem($event)" parent="$ctrl.data.encryption.ENCRYPTION" list-id="'hotrod-connector-list'"></sni-list>
                 </div>
 
               </div>
