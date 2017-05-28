@@ -72,8 +72,9 @@
                   </div>
                 </div>
                 <list-expanded-content>
+                  <sni-list add-action="$ctrl.addNewSniToHotrod($event)" parent="$parent.item" list-id="'hotrod-list'"></sni-list>
                   <!-- NEW SNI -->
-                  <new-sni add-action="$ctrl.addNewSniToHotrod($event)" hotrod="$parent.item"></new-sni>
+                  <!--<new-sni add-action="$ctrl.addNewSniToHotrod($event)" hotrod="$parent.item"></new-sni>
                   
                   <pf-list-view id="hotrod-inner"
                                 config="{selectionMatchProp: ''}"
@@ -88,7 +89,7 @@
                           {{item['security-realm']}}
                         </div>
                       </div>
-                    </pf-list-view>
+                    </pf-list-view>-->
                 </list-expanded-content>
               </pf-list-view>
               <!-- SNI LIST END -->

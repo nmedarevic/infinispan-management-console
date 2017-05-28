@@ -7,7 +7,7 @@ export class NewSniComponent {
   constructor() {
     this.bindings = {
       addAction: '&',
-      hotrod: '<'
+      parent: '<'
     };
     this.controller = function() {
       this.hostName = '';
@@ -17,7 +17,7 @@ export class NewSniComponent {
           $event: {
             hostName: this.hostName, 
             securityRealm: this.securityRealm,
-            hotrod: this.hotrod
+            parent: this.parent
           }
         });
         this.hostName = '';

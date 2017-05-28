@@ -1,6 +1,7 @@
 import {App} from "../../ManagementConsole";
 import {EndpointConfigurationCtrl} from "./EndpointConfigurationCtrl";
 import {NewSniComponent} from "./components/new-sni/new-sni.component";
+import {SniListComponent} from "./components/sni-list/sni-list.component";
 
 export class EndpointConfiguration {
 
@@ -26,3 +27,4 @@ export class EndpointConfiguration {
 const module: ng.IModule = App.module("managementConsole.components.configuration.endpoint", []);
 module.component("endpointConfiguration", new EndpointConfiguration());
 module.component("newSni", new NewSniComponent());
+module.component("sniList", new SniListComponent());
