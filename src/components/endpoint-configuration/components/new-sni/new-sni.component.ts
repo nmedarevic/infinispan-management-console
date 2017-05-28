@@ -15,6 +15,7 @@ export class NewSniComponent {
       this.addSni = () => {
         this.addAction({
           $event: {
+            name: this.name,
             hostName: this.hostName, 
             securityRealm: this.securityRealm,
             parent: this.parent

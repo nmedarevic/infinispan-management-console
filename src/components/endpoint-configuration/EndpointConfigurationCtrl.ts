@@ -99,14 +99,14 @@ export class EndpointConfigurationCtrl {
   }
 
    public addNewSniToMultiTenancyHotrod($event) {
-     this.data['multi-tenancy'].MULTI_TENANCY.hotrod[$event.parent.name].sni[$event.hostName] = {
+     this.data['multi-tenancy'].MULTI_TENANCY.hotrod[$event.parent.name].sni[$event.name] = {
        'host-name': $event.hostName,
        'security-realm': $event.securityRealm
      };
    }
 
    public addNewSniToHotrod($event) {
-      $event.parent.sni[$event.hostName] = {
+      $event.parent.sni[$event.name] = {
         'host-name': $event.hostName,
         'security-realm': $event.securityRealm
       }
