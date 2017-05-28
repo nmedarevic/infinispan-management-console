@@ -84,7 +84,7 @@
 
     <uib-tab heading="REST">
 
-      <div class="panel panel-default">
+      <div class="panel panel-default panel-list">
         <div class="panel-heading">
           <div class="row">
             <div class="col-md-6"><h3 class="panel-title">Rest Connectors</h3></div>
@@ -93,9 +93,10 @@
 
         <div class="panel-body">
           <div class="form-horizontal">
-            {{$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest}}
             <div class="col-md-12 list-view-container">
-              <pf-list-view id="rest" config="{useExpandingRows:true}"
+              <pf-list-view id="rest"
+                            config="{useExpandingRows:true}"
+                            class="multi-tenancy"
                             items="$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest">
                 <div class="list-view-pf-description">
                   <div class="list-group-item-heading">
@@ -103,16 +104,17 @@
                   </div>
                 </div>
                 <list-expanded-content>
-                  <div class="col-md-8 list-view-container">
-                    {{$parent.item}};
+                  <!--<div class="col-md-8 list-view-container">-->
                     <pf-list-view id="rest-inner"
                                   items="$parent.item.prefix">
-                      <div class="list-group-item-text">
-                        <label class="control-label">Prefix</label>
-                        <input class="form-control" type="text" ng-model="item.path"/>
+                        <div class="list-view-pf-description">
+                          <div class="list-group-item-heading">
+                            <label class="control-label">Path</label> {{item.path}}
+                          </div>
+                        </div>
                       </div>
                     </pf-list-view>
-                  </div>
+                  <!--</div>-->
                 </list-expanded-content>
               </pf-list-view>
             </div>
