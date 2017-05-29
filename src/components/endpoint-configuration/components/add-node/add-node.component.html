@@ -11,7 +11,7 @@
       <div class="form-group" ng-repeat="prop in $ctrl.props">
         <label class="col-md-4 control-label">* <span translate>{{prop.name}}: </span></label>
         <div class="col-md-6">
-          <input type="text" class="form-control" ng-model="$ctrl.newItem[prop.name]" id-generator="sni-host-name" required/>
+          <input type="text" class="form-control" ng-model="$ctrl.newItem[prop.propName]" id-generator="sni-host-name" required/>
         </div>
         <div class="col-md-2 pull-left" style="padding-left: 0" ng-if="prop.propInfoMessage">
           <i class="fa fa-info-circle ng-scope" uib-tooltip="{{prop.propInfoMessage}}" tooltip-trigger="" tooltip-animation="true" tooltip-placement="top"></i>

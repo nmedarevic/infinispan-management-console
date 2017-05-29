@@ -36,12 +36,12 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
   }
 
   create(endpoint: IEndpoint): ng.IPromise<any> {
-    let excludedAttributes: string [] = ["is-new-node"];
+    let excludedAttributes: string [] = ["is-new-node", "isExpanded", "hash"];
     return this.endpointService.save(endpoint, excludedAttributes);
   }
 
   update(endpoint: IEndpoint): ng.IPromise<any> {
-    let excludedAttributes: string [] = ["socket-binding", "is-new-node"];
+    let excludedAttributes: string [] = ["socket-binding", "is-new-node", "isExpanded", "hash"];
     return this.endpointService.save(endpoint, excludedAttributes);
   }
 

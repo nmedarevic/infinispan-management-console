@@ -12,6 +12,7 @@ export class NewSniComponent {
     this.controller = function() {
       this.hostName = '';
       this.securityRealm = '';
+      this.name = '';
       this.addSni = () => {
         this.addAction({
           $event: {
@@ -23,6 +24,7 @@ export class NewSniComponent {
         });
         this.hostName = '';
         this.securityRealm = '';
+        this.name = '';
       }
     };
     this.templateUrl = 'components/endpoint-configuration/components/new-sni/new-sni.component.html';

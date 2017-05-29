@@ -18,11 +18,11 @@ export class SniListComponent {
           });
       };
       this.remove = (action, item) => {
-        console.log(action, item);
         this.removeAction({
           $event: {
             parent: this.parent,
-            item: item
+            item: item,
+            path: this.listId
           }
         });
       };

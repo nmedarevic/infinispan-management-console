@@ -72,7 +72,7 @@
                   </div>
                 </div>
                 <list-expanded-content>
-                  <sni-list add-action="$ctrl.addNewSniToMultiTenancyHotrod($event)" parent="$parent.item" list-id="'hotrod-list'"></sni-list>
+                  <sni-list add-action="$ctrl.addNewSniToMultiTenancyHotrod($event)" remove-action="$ctrl.removeItem($event)" parent="$parent.item" list-id="{{$ctrl.paths.hotrod + '.' + $parent.item.nodeName + '.sni'}}"></sni-list>
                 </list-expanded-content>
               </pf-list-view>
               <!-- SNI LIST END -->
@@ -101,7 +101,7 @@
                 add-action="$ctrl.addNewConnectorToRest($event)">
               </add-node>
               <pf-list-view id="rest"
-                            config="{useExpandingRows:true}"
+                            config="{useExpandingRows:true, selectionMatchProp: ''}"
                             class="multi-tenancy"
                             items="$ctrl.data['multi-tenancy'].MULTI_TENANCY.rest">
                 <div class="list-view-pf-description">
@@ -112,6 +112,7 @@
                 <list-expanded-content>
                   <!--<div class="col-md-8 list-view-container">-->
                     <pf-list-view id="rest-inner"
+                                  config="{selectionMatchProp: ''}"
                                   items="$parent.item.prefix">
                         <div class="list-view-pf-description">
                           <div class="list-group-item-heading">
