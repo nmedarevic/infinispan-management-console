@@ -43,7 +43,6 @@ export class CacheContainersCtrl {
     }
 
     this.initRebalancingStatuses(this.containers).then(statuses => {
-      console.log(statuses);
       this.rebalancingStatuses = statuses;
     })
   }
@@ -137,5 +136,9 @@ export class CacheContainersCtrl {
     .then(() => {
       this.$state.reload();
     });
+  }
+
+  createSiteModal(container: ICacheContainer): void {
+    this.modalService.createCachesSiteModal(container);
   }
 }

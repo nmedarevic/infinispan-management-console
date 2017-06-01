@@ -53,20 +53,7 @@ export class CacheContainerCtrl {
   }
 
   createSiteModal(): void {
-    this.$uibModal.open({
-      templateUrl: "module/cache-container/view/manage-sites-modal.html",
-      controller: SiteManagementModalCtrl,
-      controllerAs: "ctrl",
-      resolve: {
-        container: (): ICacheContainer => {
-          return this.container;
-        },
-        siteArrays: (): ng.IPromise<{[id: string]: string[]}> => {
-          return this.containerService.getSiteArrays(this.container);
-        }
-      },
-      size: "lg"
-    });
+    this.modalService.createCachesSiteModal(this.container);
   }
 
   private createRebalanceModal(enableRebalance: boolean, message: string): void {

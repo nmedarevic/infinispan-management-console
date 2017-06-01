@@ -21,6 +21,8 @@ import {EndpointModalCtrl} from './../../components/modals/endpoint-modal/Endpoi
 import {SniModalCtrl} from './../../components/modals/endpoint-modal/SniModalCtrl';
 import {EndpointService} from '../endpoint/EndpointService';
 
+import {SiteManagementModalCtrl} from '../../module/cache-container/SiteManagementModalCtrl';
+
 
 const module: ng.IModule = App.module("managementConsole.services.modal", []);
 
@@ -127,6 +129,24 @@ export class ModalService {
     .result
     .then(data => {console.log('data', data); return data;})
     .catch(err => {console.log('err', err); return err;});
+  }
+
+
+  public createCachesSiteModal(cacheContainer: ICacheContainer): void {
+    this.$uibModal.open({
+      templateUrl: "module/cache-container/view/manage-sites-modal.html",
+      controller: SiteManagementModalCtrl,
+      controllerAs: "ctrl",
+      resolve: {
+        container: (): ICacheContainer => {
+          return cacheContainer;
+        },
+        siteArrays: (): ng.IPromise<{[id: string]: string[]}> => {
+          return this.containerService.getSiteArrays(cacheContainer);
+        }
+      },
+      size: "lg"
+    });
   }
 }
 
