@@ -11,14 +11,16 @@ import {IEndpoint} from "../../services/endpoint/IEndpoint";
 import {ISocketBinding} from "../../services/socket-binding/ISocketBinding";
 import {LaunchTypeService} from "../../services/launchtype/LaunchTypeService";
 import {ModalService} from '../../services/modal/ModalService';
+import IQService = angular.IQService;
 
 export class CacheContainersCtrl {
 
-  static $inject: string[] = ["containerService", "domainService", "jGroupsService", "clusterEventsService", "containers", "launchType", "modalService", "$state"];
+  static $inject: string[] = ["containerService", "domainService", "jGroupsService", "clusterEventsService", "containers", "launchType", "modalService", "$state", "$q"];
 
   domain: IDomain;
   stacks: IMap<string>;
   gridEvents: IClusterEvent[] = [];
+  rebalancingStatuses: any[] = [];
 
   constructor(private containerService: ContainerService,
               private domainService: DomainService,
@@ -27,7 +29,8 @@ export class CacheContainersCtrl {
               public containers: ICacheContainer[],
               private launchType: LaunchTypeService,
               private modalService: ModalService,
-              private $state: any) {
+              private $state: any,
+              private $q: IQService) {
     if (this.jGroupsService.hasJGroupsStack()) {
       this.domainService.getHostsAndServers()
         .then((domain) => {
@@ -38,6 +41,36 @@ export class CacheContainersCtrl {
 
       this.getAllClusterEvents();
     }
+
+    this.initRebalancingStatuses(this.containers).then(statuses => {
+      console.log(statuses);
+      this.rebalancingStatuses = statuses;
+    })
+  }
+
+  private initRebalancingStatuses(allContainers: ICacheContainer[]): ng.IPromise<any[]> {
+    const defered = this.$q.defer<any>();
+    const containerReducerFn = (acc: any, tally: ICacheContainer): any[] => {
+        acc.push(this.containerService.isRebalancingEnabled(tally));
+       return acc;
+    };
+
+    const statusReducerFn = (acc: any, tally: boolean, index: number):any[] => {
+      acc.push({
+        profile: allContainers[index].profile,
+        status: tally
+      });
+      return acc;
+    };
+
+    const containerPromises = allContainers.reduce(containerReducerFn, []);
+
+    this.$q.all(containerPromises).then(containerStatuses => {
+      const statuses = containerStatuses.reduce(statusReducerFn, []); 
+      defered.resolve(statuses);
+    });
+
+    return defered.promise;
   }
 
   getContainerId(name: string, container: ICacheContainer): string {
@@ -92,14 +125,17 @@ export class CacheContainersCtrl {
     return this.launchType.isStandaloneLocalMode();
   }
 
-  enableContainerRebalance(container) {
+  enableContainerRebalance(container): void {
     this.modalService.createRebalanceModal(true, "ENABLE rebalancing for cache container?", container)
     .then(() => {
       this.$state.reload();
     });
   }
 
-  disableContainerRebalance(container) {
-    this.modalService.createRebalanceModal(false, "DISABLE rebalancing for cache container?", container);
+  disableContainerRebalance(container): void {
+    this.modalService.createRebalanceModal(false, "DISABLE rebalancing for cache container?", container)
+    .then(() => {
+      this.$state.reload();
+    });
   }
 }

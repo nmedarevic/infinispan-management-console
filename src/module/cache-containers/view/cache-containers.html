@@ -71,12 +71,12 @@
                 <span class="fa fa-ellipsis-v"></span>
               </button>
               <ul ng-if="!ctrl.isLocalMode()" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <li role="presentation" ng-class="ctrl.isRebalancingEnabled ? 'disabled' : 'enabled'">
+                <li role="presentation" ng-class="ctrl.rebalancingStatuses[$index].status ? 'disabled' : 'enabled'">
                   <a id="enable_rebalance.button" role="menuitem"
                     ng-click="ctrl.enableContainerRebalance(container)"
                     translate>ENABLE_REBALANCING</a>
                 </li>
-                <li role="presentation" ng-class="ctrl.isRebalancingEnabled ? 'enabled'  : 'disabled'">
+                <li role="presentation" ng-class="ctrl.rebalancingStatuses[$index].status ? 'enabled'  : 'disabled'">
                   <a id="disable_rebalance.button" role="menuitem"
                     ng-click="ctrl.disableContainerRebalance(container)"
                     translate>DISABLE_REBALANCING</a>
