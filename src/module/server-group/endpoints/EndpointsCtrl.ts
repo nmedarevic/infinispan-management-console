@@ -43,6 +43,5 @@ export class EndpointsCtrl {
     };
 
     this.modalService.openEndpointModal(`${type}-connector`, this.serverGroup.name);
-    // this.$state.go("new-endpoint-config", params);
   }
 }
