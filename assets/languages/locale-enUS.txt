@@ -102,7 +102,7 @@
   "DISABLE_REBALANCING_DIALOG":"Disabling rebalancing of <strong>'{{cacheName}}'</strong> will <em>NOT</em> automatically redistribute data across the cluster when nodes are added/removed.",
   "PLEASE_ENTER_CACHE_PROPERTIES":"Please, enter the required cache properties:",
   "CACHE_EXISTS":"Cache already exists!",
-  "EDIT_BASE_CONFIGURATION":"Edit Base Configuration",
+  "EDIT_BASE_CONFIGURATION":"Customize base configuration after this cache is created",
   "BASE_CONFIGURATION":"Base Configuration",
   "LAUNCH_NEW_TASK":"Launch new task",
   "PLEASE_ENTER_TASK_PROPERTIES":"Please, enter the required task properties:",

@@ -56,11 +56,4 @@ export class EndpointConfigurationCtrl {
   getMetaRootForResource(resource: string): any {
     return deepGet(this.meta, resource);
   }
-
-  openAddSniModal():void {
-    this.modalService.openSniModal()
-    .then(data => {
-      console.log(data);
-    });
-  }
 }

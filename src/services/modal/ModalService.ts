@@ -18,8 +18,6 @@ import {IServerGroup} from "../server-group/IServerGroup";
 import {openConfirmationModal} from "../../common/dialogs/Modals";
 
 import {EndpointModalCtrl} from './../../components/modals/endpoint-modal/EndpointModalCtrl';
-import {SniModalCtrl} from './../../components/modals/endpoint-modal/SniModalCtrl';
-import {EndpointService} from '../endpoint/EndpointService';
 
 import {SiteManagementModalCtrl} from '../../module/cache-container/SiteManagementModalCtrl';
 
@@ -119,18 +117,6 @@ export class ModalService {
       }
     }).result;
   }
-
-  public openSniModal(): ng.IPromise<any> {
-    return this.$uibModal.open({
-      templateUrl: "components/endpoint-configuration/view/add-sni-modal.html",
-      controller: SniModalCtrl,
-      controllerAs: "ctrl"
-    })
-    .result
-    .then(data => {console.log('data', data); return data;})
-    .catch(err => {console.log('err', err); return err;});
-  }
-
 
   public createCachesSiteModal(cacheContainer: ICacheContainer): void {
     this.$uibModal.open({
