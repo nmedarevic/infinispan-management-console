@@ -129,7 +129,6 @@ export class EndpointService {
   }
 
   save(endpoint: IEndpoint, excludedAttributes: string []): ng.IPromise<any> {
-    console.log(endpoint, excludedAttributes);
     let builder: CompositeOpBuilder = new CompositeOpBuilder();
     let root: any = endpoint.getDMR();
     let dmrAddress: string [] = this.getEndpointAddress(endpoint, "clustered");

@@ -87,7 +87,6 @@ export class EndpointConfigCtrl extends AbstractConfigurationCtrl {
   }
 
   updateEndpoint(endpoint:IEndpoint): void {
-    console.log(endpoint);
     let message: string = this.isEditMode()?"Update endpoint " + this.endpoint.getName() + "?": "Create endpoint " + this.endpoint.getName() + "?"
     openConfirmationModal(this.$uibModal, message).result.then(() => {
       this.update(endpoint)
