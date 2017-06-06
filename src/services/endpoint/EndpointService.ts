@@ -114,8 +114,7 @@ export class EndpointService {
 
   getConfigurationMeta(profile: string, endpointType: string, endpointName: string): ng.IPromise<any> {
     let deferred: ng.IDeferred<any> = this.$q.defer();
-    let address: string[] = endpointName ?
-      this.getEndpointsRootAddress(profile).concat(endpointType).concat(endpointType) : this.getEndpointsRootAddress(profile).concat(endpointType);
+    let address: string[] = this.getEndpointsRootAddress(profile).concat(endpointType).concat(endpointType);
     this.dmrService.readResourceDescription({
       address: address,
       recursive: true
